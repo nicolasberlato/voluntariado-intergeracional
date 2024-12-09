@@ -24,6 +24,7 @@ function Home() {
               <img src={Img2}></img>
             </div>
           </div>
+          <button>CADASTRE-SE</button>
         </div>
       </div>
     );
