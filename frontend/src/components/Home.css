@@ -1,0 +1,39 @@
+
+body {
+    background-color: #f6f4f3;
+    font-family: Montserrat;
+}
+
+nav {
+    position: absolute;
+    top: 30px;
+    right: 10px;
+    padding: 10px 20px;
+    color: #31241e;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 15px; 
+}
+
+h1{
+    color: #31241e;
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    font-size: 30px;
+}
+
+hr {
+    position: absolute;
+    top: 80px;
+    height: 2px; 
+    background-color: #31241e; 
+    width: 100vw;
+    border: none;
+}
+
