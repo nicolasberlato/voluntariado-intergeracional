@@ -4,13 +4,19 @@ import "./Signup.css";
 
 interface Address {
   cep: string;
-  cidade: string;
+  localidade: string;
   logradouro: string;
   numero: string;
   complemento: string;
   bairro: string;
   estado: string;
 }
+
+interface Activity {
+  id: number;
+  name: string;
+}
+
 
 interface FormData {
   usertype: string;
@@ -19,8 +25,7 @@ interface FormData {
   password: string;
   birthDate: string;
   address: Address;
-
-  preferencias: string;
+  activities: number[];
 }
 
 function Signup() {
@@ -29,11 +34,11 @@ function Signup() {
     name: "",
     email: "",
     password: "",
-    preferencias: "",
+    activities: [],
     birthDate: "",
     address: {
     cep: "",
-    cidade: "",
+    localidade: "",
     logradouro: "",
     bairro: "",
     estado: "",
@@ -42,14 +47,38 @@ function Signup() {
     },
   });
 
+   const [availableActivities ] = useState<Activity[]>([
+     { id: 1, name: "Leitura" },
+     { id: 2, name: "Ajuda com tecnologia" },
+     { id: 3, name: "Atividade física" },
+   ]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
 
-
-    if (["numero", "complemento"].includes(name)) {
+    if (name === "activities") {
+      const selectedOptions = Array.from(
+        (e.target as HTMLSelectElement).selectedOptions
+      ).map((option) => Number(option.value));
+      setFormData((prevData) => ({
+        ...prevData,
+        activities: selectedOptions,
+      }));
+    } else if (
+      [
+        "numero",
+        "complemento",
+        "cep",
+        "localidade",
+        "logradouro",
+        "bairro",
+        "estado",
+      ].includes(name)
+    ) {
       setFormData((prevData) => ({
         ...prevData,
         address: {
@@ -65,9 +94,6 @@ function Signup() {
     }
   };
 
-
-
-  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
@@ -122,7 +148,7 @@ function Signup() {
             ...prevData,
             address: {
               ...prevData.address,
-              cidade: json.localidade,
+              localidade: json.localidade,
               logradouro: json.logradouro,
               bairro: json.bairro,
               estado: json.uf,
@@ -134,6 +160,26 @@ function Signup() {
       }
     }
   };
+
+  const handleCheckboxChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    activityId: number
+  ) => {
+    if (e.target.checked) {
+
+      setFormData((prevData) => ({
+        ...prevData,
+        activities: [...prevData.activities, activityId],
+      }));
+    } else {
+
+      setFormData((prevData) => ({
+        ...prevData,
+        activities: prevData.activities.filter((id) => id !== activityId),
+      }));
+    }
+  };
+
   return (
     <div className="home">
       <h1>NOME DO SITE</h1>
@@ -204,16 +250,6 @@ function Signup() {
         </label>
         <br />
         <label>
-          Preferencias:
-          <input
-            type="text"
-            name="preferencias"
-            value={formData.preferencias}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
           Data de nascimento:
           <input
             type="text"
@@ -222,6 +258,24 @@ function Signup() {
             onChange={handleChange}
           />
         </label>
+        <br />
+        <label>Atividades:</label>
+        <div>
+          {availableActivities.map((activity) => (
+            <div key={activity.id}>
+              <label>
+                <input
+                  type="checkbox"
+                  name="activities"
+                  value={activity.id}
+                  checked={formData.activities.includes(activity.id)}
+                  onChange={(e) => handleCheckboxChange(e, activity.id)}
+                />
+                {activity.name}
+              </label>
+            </div>
+          ))}
+        </div>
         <br />
         <label>
           CEP:
@@ -238,8 +292,8 @@ function Signup() {
           Cidade:
           <input
             type="text"
-            name="cidade"
-            value={formData.address.cidade}
+            name="localidade"
+            value={formData.address.localidade}
             readOnly
           />
         </label>
