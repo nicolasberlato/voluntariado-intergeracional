@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import "./Signup.css";
-import Login from "./Login";
 
 interface Address {
   cep: string;
