@@ -1,0 +1,14 @@
+#logininput {
+    background-color: #31241e;
+    color: #f6f4f3;
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+    padding: 5px;
+    display:block;
+    margin: 20px;
+}
+
+h2 {
+    color: #31241e;
+}
