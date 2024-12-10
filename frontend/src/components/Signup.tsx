@@ -14,6 +14,7 @@ interface FormData {
   logradouro: string;
   bairro: string;
   estado: string;
+  numero: string;
 }
 
 function Signup() {
@@ -29,10 +30,11 @@ function Signup() {
     logradouro: "",
     bairro: "",
     estado: "",
+    numero: "",
   });
 
-  // Handle input change
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -40,13 +42,13 @@ function Signup() {
     }));
   };
 
-  // Handle form submission
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Create your submit logic here
+    
   };
 
-  // Fetch CEP data when CEP is filled
+  
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setFormData((prevData) => ({
@@ -58,10 +60,12 @@ function Signup() {
       try {
         const response = await fetch(`http://viacep.com.br/ws/${value}/json/`);
         const json = await response.json();
-        if (json && json.logradouro) {
+        if (json && json.logradouro && json.bairro && json.estado) {
           setFormData((prevData) => ({
             ...prevData,
             logradouro: json.logradouro,
+            bairro: json.bairro,
+            estado: json.estado,
           }));
         }
       } catch (error) {
@@ -94,7 +98,77 @@ function Signup() {
             onChange={handleChange}
           />
         </label>
+        <label>
+          E-mail:
+          <input
+            type="text"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </label>
         <br />
+        <label>
+          Senha:
+          <input
+            type="text"
+            name="senha"
+            value={formData.senha}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <label>
+          Biografia:
+          <textarea
+            name="biografia"
+            rows={6}
+            value={formData.biografia}
+            onChange={handleChange}
+            placeholder="Escreva sua biografia aqui..."
+          />
+        </label>
+        <label>
+          Preferencias:
+          <input
+            type="text"
+            name="preferencias"
+            value={formData.preferencias}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <label>
+          Data de nascimento:
+          <input
+            type="text"
+            name="dataNascimento"
+            value={formData.dataNascimento}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <label>
+          Data de nascimento:
+          <input
+            type="text"
+            name="dataNascimento"
+            value={formData.dataNascimento}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+        <label>
+          Telefone:
+          <input
+            type="text"
+            name="telefone"
+            value={formData.telefone}
+            onChange={handleChange}
+          />
+        </label>
+        <br />
+
         <label>
           CEP:
           <input
@@ -116,6 +190,25 @@ function Signup() {
           />
         </label>
         <br />
+        <label>
+          Bairro:
+          <input type="text" name="bairro" value={formData.bairro} readOnly />
+        </label>
+        <br />
+        <label>
+          Estado:
+          <input type="text" name="estado" value={formData.estado} readOnly />
+        </label>
+        <br />
+        <label>
+          Numero:
+          <input
+            type="text"
+            name="numero"
+            value={formData.numero}
+            onChange={handleChange}
+          />
+        </label>
         <button type="submit">Submit</button>
       </form>
     </div>
