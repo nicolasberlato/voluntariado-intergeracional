@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./Signup.css";
 
 interface FormData {
+  tipo: string;
   name: string;
   email: string;
   senha: string;
@@ -19,6 +20,7 @@ interface FormData {
 
 function Signup() {
   const [formData, setFormData] = useState<FormData>({
+    tipo: "",
     name: "",
     email: "",
     senha: "",
@@ -89,6 +91,31 @@ function Signup() {
       </nav>
       <hr />
       <form onSubmit={handleSubmit}>
+        <p>Você é um voluntário ou usuário?</p>
+
+        <label>
+          <input
+            type="radio"
+            name="tipo"
+            value="voluntario"
+            checked={formData.tipo === "voluntario"} // Mark as selected if it matches formData.tipo
+            onChange={handleChange} // Update the state on selection
+          />
+          Voluntário
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="tipo"
+            value="usuario"
+            checked={formData.tipo === "usuario"} 
+            onChange={handleChange} 
+          />
+          Usuário
+        </label>
+
+        <br />
         <label>
           Nome:
           <input
