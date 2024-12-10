@@ -69,10 +69,31 @@ function Signup() {
 
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-  };
+  e.preventDefault();
 
+  try {
+    const response = await fetch("URL", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Signup successful:", data);
+   
+    } else {
+      const error = await response.json();
+      console.error("Signup failed:", error);
+  
+    }
+  } catch (err) {
+    console.error("Error submitting form:", err);
+    
+  }
+};
   
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
