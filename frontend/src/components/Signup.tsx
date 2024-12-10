@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import "./Signup.css";
-import Img4 from "../assets/img4.jpg";
+import Login from "./Login";
 
 interface Address {
   cep: string;
@@ -182,7 +182,7 @@ function Signup() {
   };
 
   return (
-    <div className="home">
+    <div className="signup">
       <h1>NOME DO SITE</h1>
       <nav>
         <ul>
@@ -347,9 +347,10 @@ function Signup() {
               onChange={handleChange}
             />
           </label>
-          <button type="submit">Enviar</button>
+          <Link to='/login'>
+            <button type="submit">Enviar</button>
+          </Link>
         </form>
-        
       </div>
     </div>
   );
