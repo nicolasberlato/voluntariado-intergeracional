@@ -39,3 +39,10 @@ hr {
     width: 96%;
     border: none;
 }
+
+form {
+    color: #31241e;
+}
+label {
+    color: #31241e;
+}
