@@ -9,6 +9,7 @@ function Signup() {
           </ul>
         </nav>
         <hr />
+        
         </div>
     )
 }
