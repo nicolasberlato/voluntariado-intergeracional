@@ -15,27 +15,27 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
     private String name;
-    @Column(nullable = false, unique = true)
     private String email;
-    // ver a questão da senha
     private String password;
-    @Column(nullable = false)
     private LocalDate birthDate;
-    @Enumerated (EnumType.STRING)
+    @Enumerated (value = jakarta.persistence.EnumType.STRING)
     private UserType usertype;
     @Embedded
     private Address address;
