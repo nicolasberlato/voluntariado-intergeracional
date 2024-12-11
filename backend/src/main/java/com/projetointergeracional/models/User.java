@@ -1,9 +1,8 @@
 package com.projetointergeracional.models;
 
-import java.time.LocalDate;
 import java.util.Set;
 
-import jakarta.persistence.Column;
+
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,16 +33,27 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private LocalDate birthDate;
-    @Enumerated (value = jakarta.persistence.EnumType.STRING)
-    private UserType usertype;
+    @Enumerated (EnumType.STRING)
+    private UserType userType;
     @Embedded
     private Address address;
 
     @ManyToMany
-    @JoinTable (
+    @JoinTable(
         name = "user_activities",
         joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "activity_id"))
+        inverseJoinColumns = @JoinColumn(name = "activity_id")
+    )
     private Set<Activity> activities;
+
+    public User(String name, String email, String password, UserType userType, Address address,
+            Set<Activity> activities) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+        this.address = address;
+        this.activities = activities;
+    }
+    
 }

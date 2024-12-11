@@ -1,6 +1,5 @@
 package com.projetointergeracional.models;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,8 +14,8 @@ import lombok.Setter;
 @Table(name = "activities")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Activity {
 
     @Id
@@ -24,4 +23,8 @@ public class Activity {
     private Long id;
 
     private String description;
+
+    public Activity(String description) {
+        this.description = description;
+    }
 }

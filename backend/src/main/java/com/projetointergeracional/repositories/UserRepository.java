@@ -6,9 +6,11 @@ import com.projetointergeracional.models.User;
 import com.projetointergeracional.models.UserType;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface UserRepository extends JpaRepository <User, Long> {
 
-    List<User> findByUserType(UserType usertype);
+    List<User> findByUserType(UserType userType);
+    Optional <User> findByEmail(String email);
 }

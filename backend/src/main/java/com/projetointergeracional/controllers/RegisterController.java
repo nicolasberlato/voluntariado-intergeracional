@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projetointergeracional.dtos.UserDTO;
+import com.projetointergeracional.dtos.RegisterDTO;
+import com.projetointergeracional.models.User;
 import com.projetointergeracional.services.UserService;
 
 @RestController
@@ -17,9 +18,9 @@ public class RegisterController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/newuser")
-    public ResponseEntity<UserDTO> cadastrarUsuario(@RequestBody UserDTO userDTO) {
-        UserDTO newUser = userService.registerUser(userDTO);
-        return ResponseEntity.ok(newUser);
+    @PostMapping
+    public ResponseEntity<User> registerUser(@RequestBody RegisterDTO userDTO) {
+        User user = userService.registerUser(userDTO);
+        return ResponseEntity.ok(user);
     }
 }

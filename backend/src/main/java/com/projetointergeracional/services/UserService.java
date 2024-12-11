@@ -7,11 +7,12 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import com.projetointergeracional.dtos.UserDTO;
+import com.projetointergeracional.dtos.RegisterDTO;
+import com.projetointergeracional.models.Activity;
 import com.projetointergeracional.models.User;
 import com.projetointergeracional.models.UserType;
-import com.projetointergeracional.models.Activity;
 import com.projetointergeracional.repositories.ActivityRepository;
 import com.projetointergeracional.repositories.UserRepository;
 
@@ -20,46 +21,15 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private ActivityRepository activityRepository;
 
-    public UserDTO registerUser(UserDTO userDTO) {
-        User user = new User();
-        user.setName(userDTO.getName());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        user.setBirthDate(userDTO.getBirthDate());
-        user.setUsertype(userDTO.getUserType());
-        user.setAddress(userDTO.getAddress());
-
-        Set<Activity> activities = new HashSet<>();
-        for (Long activityId : userDTO.getActivities()) {
-            Activity activity = activityRepository.findById(activityId).orElseThrow(() -> new RuntimeException("Atividade não encontrada"));
-            activities.add(activity);
+    public User registerUser(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already registered");
         }
-        user.setActivities(activities);
-
-        User saveduser = userRepository.save(user);
-        return convertToDTO(saveduser);
-    }
-
-    public UserDTO convertToDTO(User user) {
-        UserDTO dto = new UserDTO();
-        dto.setName(user.getName());
-        dto.setEmail(user.getEmail());
-        dto.setPassword(user.getPassword());
-        dto.setBirthDate(user.getBirthDate());
-        dto.setUserType(user.getUsertype());
-        dto.setAddress(user.getAddress());
-
-        // Transformar atividades em IDs
-        Set<Long> activityIds = new HashSet<>();
-        for (Activity activity : user.getActivities()) {
-            activityIds.add(activity.getId());
-        }
-        dto.setActivities(activityIds);
-
-        return dto;
+        return userRepository.save(user);
     }
 
     public User getUserById(Long id) {
@@ -71,7 +41,32 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<User> getUsersByType(UserType type) {
+    public List<User> getUsersByType(@PathVariable ("type")UserType type) {
         return userRepository.findByUserType(type);
     }
+
+    public User registerUser(RegisterDTO userDTO) {
+        Set<Activity> activities = new HashSet<>();
+
+        if (userDTO.activities() != null) {
+            for (Long activityId : userDTO.activities()) {
+                Activity activity = activityRepository.findById(activityId)
+                        .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + activityId));
+                activities.add(activity);
+            }
+        }
+
+        User user = new User(
+            userDTO.name(),
+            userDTO.email(),
+            userDTO.password(),
+            userDTO.type(),
+            userDTO.address(),
+            activities
+        );
+        
+        return userRepository.save(user);
+
+    }
+        
 }
