@@ -22,7 +22,7 @@ function Home() {
         <hr />
         <div className="conteudo">
           <div className="sobre">
-            <p>
+            <p className='sobretexto'>
               Sobre o site...Sobre o site...Sobre o site...Sobre o site...Sobre
               o site... Sobre o site...
             </p>

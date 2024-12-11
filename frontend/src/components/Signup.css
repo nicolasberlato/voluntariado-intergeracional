@@ -8,7 +8,7 @@ body {
 
 nav {
     position: absolute;
-    top: 40px;
+    top: 0px;
     right: 10px;
     padding: 10px 20px;
     color: #31241e;
@@ -30,14 +30,14 @@ nav ul {
 h1{
     color: #31241e;
     position: absolute;
-    top: 60px;
+    top: 20px;
     left: 40px;
     font-size: 30px;
 }
 
 hr {
     position: absolute;
-    top: 120px;
+    top: 100px;
     height: 2px; 
     background-color: #31241e; 
     width: 96%;
@@ -105,4 +105,8 @@ button {
     height: 30px;
     margin-right: 10px;
     margin-left: 15px;
+}
+
+.voluntarioUsuario {
+    color:#31241e;
 }
