@@ -197,156 +197,141 @@ function Signup() {
       <div className="form">
         <form onSubmit={handleSubmit}>
           <p>Você é um voluntário ou usuário?</p>
-
-          <label>
-            <input
-              type="radio"
-              name="usertype"
-              value="voluntario"
-              checked={formData.usertype === "voluntario"}
-              onChange={handleChange}
-            />
-            Voluntário
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              name="usertype"
-              value="usuario"
-              checked={formData.usertype === "usuario"}
-              onChange={handleChange}
-            />
-            Usuário
-          </label>
-          <br />
-          <br />
-          <label>
-            Nome:
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-            />
-          </label>
-          <br />
-          <label>
-            E-mail:
-            <input
-              type="text"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </label>
-          <br />
-          <label>
-            Senha:
-            <input
-              type="text"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </label>
-          <br />
-          <label>
-            Data de nascimento:
-            <input
-              type="text"
-              name="birthDate"
-              value={formData.birthDate}
-              onChange={handleChange}
-            />
-          </label>
-          <br />
-          <label>Atividades:</label>
-          <div>
-            {availableActivities.map((activity) => (
-              <div key={activity.id}>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="activities"
-                    value={activity.id}
-                    checked={formData.activities.includes(activity.id)}
-                    onChange={(e) => handleCheckboxChange(e, activity.id)}
-                  />
-                  {activity.name}
-                </label>
-              </div>
-            ))}
+          <div id="tipo">
+            <label>
+              <input
+                id="radio"
+                type="radio"
+                name="usertype"
+                value="voluntario"
+                checked={formData.usertype === "voluntario"}
+                onChange={handleChange}
+              />
+              Voluntário
+            </label>
+            <label>
+              <input
+                id="radio"
+                type="radio"
+                name="usertype"
+                value="usuario"
+                checked={formData.usertype === "usuario"}
+                onChange={handleChange}
+              />
+              Usuário
+            </label>
           </div>
+          <input
+            placeholder="Nome:"
+            id="signupinput"
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <input
+            placeholder="E-mail:"
+            id="signupinput"
+            type="text"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            placeholder="Senha:"
+            id="signupinput"
+            type="text"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <input
+            placeholder="Data de nascimento:"
+            id="signupinput"
+            type="text"
+            name="birthDate"
+            value={formData.birthDate}
+            onChange={handleChange}
+            required
+          />
+          <input
+            placeholder="CEP:"
+            id="signupinput"
+            type="text"
+            name="cep"
+            maxLength={8}
+            value={formData.address.cep}
+            onChange={handleCepChange}
+            required
+          />
+          <input
+            placeholder="Cidade:"
+            id="signupinput"
+            type="text"
+            name="localidade"
+            value={formData.address.localidade}
+            readOnly
+          />
+          <input
+            placeholder="Logradouro:"
+            id="signupinput"
+            type="text"
+            name="logradouro"
+            value={formData.address.logradouro}
+            readOnly
+          />
+          <input
+            placeholder="Bairro:"
+            id="signupinput"
+            type="text"
+            name="bairro"
+            value={formData.address.bairro}
+            readOnly
+          />
+          <input
+            placeholder="Estado:"
+            id="signupinput"
+            type="text"
+            name="estado"
+            value={formData.address.estado}
+            readOnly
+          />
+          <input
+            placeholder="Numero:"
+            id="signupinput"
+            type="text"
+            name="numero"
+            value={formData.address.numero}
+            onChange={handleChange}
+          />
+          <input
+            placeholder="Complemento"
+            id="signupinput"
+            type="text"
+            name="complemento"
+            value={formData.address.complemento}
+            onChange={handleChange}
+          />
           <br />
-          <label>
-            CEP:
-            <input
-              type="text"
-              name="cep"
-              maxLength={8}
-              value={formData.address.cep}
-              onChange={handleCepChange}
-            />
-          </label>
-          <br />
-          <label>
-            Cidade:
-            <input
-              type="text"
-              name="localidade"
-              value={formData.address.localidade}
-              readOnly
-            />
-          </label>
-          <label>
-            Logradouro:
-            <input
-              type="text"
-              name="logradouro"
-              value={formData.address.logradouro}
-              readOnly
-            />
-          </label>
-          <br />
-          <label>
-            Bairro:
-            <input
-              type="text"
-              name="bairro"
-              value={formData.address.bairro}
-              readOnly
-            />
-          </label>
-          <label>
-            Estado:
-            <input
-              type="text"
-              name="estado"
-              value={formData.address.estado}
-              readOnly
-            />
-          </label>
-          <br />
-          <label>
-            Numero:
-            <input
-              type="text"
-              name="numero"
-              value={formData.address.numero}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Complemento
-            <input
-              type="text"
-              name="complemento"
-              value={formData.address.complemento}
-              onChange={handleChange}
-            />
-          </label>
-          <Link to='/login'>
+          <label id="atividadeslabel">Atividades:</label>
+          {availableActivities.map((activity) => (
+            <div key={activity.id}>
+              <label id="atividades">
+                <input
+                  type="checkbox"
+                  name="activities"
+                  value={activity.id}
+                  checked={formData.activities.includes(activity.id)}
+                  onChange={(e) => handleCheckboxChange(e, activity.id)}
+                />
+                {activity.name}
+              </label>
+            </div>
+          ))}
+          <Link to="/login">
             <button type="submit">Enviar</button>
           </Link>
         </form>

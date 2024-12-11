@@ -1,14 +1,38 @@
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import './Login.css'
 
 function Login() {
+  const [ email, setEmail ] = useState('');
+  const [ password, setPasword ] = useState('');
 
-const handleSubmit = () => {
- //enviar para o back
-}
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch("http://BACKEND", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        //HOMEPAGE
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred");
+    }
+  };
 
   return (
-    <div className="signup">
+    <div className="login">
       <h1>NOME DO SITE</h1>
       <nav>
         <ul>
@@ -22,10 +46,10 @@ const handleSubmit = () => {
       </nav>
       <hr />
       <h2>LOGIN: </h2>
-      <form onSubmit={handleSubmit}>
-        <input id='logininput' type="email" placeholder="EMAIL: " name="email"/>
-        <input id='logininput' type="password" placeholder="SENHA: " name="password"/>
-        <button type="submit">ENVIAR</button>
+      <form id="loginform" onSubmit={handleSubmit}>
+        <input id='logininput' type="email" placeholder="EMAIL: " name="email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
+        <input id='logininput' type="password" placeholder="SENHA: " name="password" required value={password} onChange={(e) => setPasword(e.target.value)}/>
+        <button id="loginbutton" type="submit">ENVIAR</button>
       </form>
     </div>
   );
