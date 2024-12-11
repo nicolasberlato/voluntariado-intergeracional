@@ -45,7 +45,7 @@ hr {
 
 form {
     margin: auto; 
-    max-width: 600px; 
+    width: 850px; 
     max-height: 490px;
     background-color: #ffffff; 
     padding: 20px; 
@@ -62,26 +62,46 @@ p {
 
 label {
     color: #31241e;
-    font-weight: 400;
-    font-size: 18px;
-    margin: 20px;
-    margin-bottom: 30px;
+    
 }
 
-input {
-    background-color: #f6f4f3;
-    border: 1px solid #ccc;
-    margin: 5px;
+#atividadeslabel {
+    font-weight: bold;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+#signupinput {
+    background-color: #31241e;
+    color: #f6f4f3;
+    width: 150px;
+    height: 20px;
+    border-radius: 5px;
+    padding: 5px;
+    display:inline;
+    margin: 20px;
+}
+
+#atividades {
+    margin-left: 20px;
 }
 
 button {
     position: relative;
-    left: 240px;
-    top: 30px; 
+    left: 350px;
+    top: 10px; 
+    background-color: #31241e;
 }
 
 .form {
     display: flex; 
-    margin-left: 380px;
+    margin-left: 250px;
     gap: 110px; 
+}
+
+#radio {
+    width: auto;
+    height: 30px;
+    margin-right: 10px;
+    margin-left: 15px;
 }
