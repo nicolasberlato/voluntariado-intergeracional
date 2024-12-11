@@ -196,7 +196,7 @@ function Signup() {
       <hr />
       <div className="form">
         <form onSubmit={handleSubmit}>
-          <p>Você é um voluntário ou usuário?</p>
+          <p className="voluntarioUsuario">Você é um voluntário ou usuário?</p>
           <div id="tipo">
             <label>
               <input
