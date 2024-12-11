@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
+
 import './Login.css'
 
 function Login() {
   const [ email, setEmail ] = useState('');
   const [ password, setPasword ] = useState('');
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,7 +23,10 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
+
         //HOMEPAGE
+        navigate('/landingpage');
+
       } else {
         alert(data.message || "Login failed");
       }

@@ -23,20 +23,21 @@ nav ul {
   margin: 0;
   padding: 0;
   display: flex;
+  margin-top: 35px;
   gap: 15px; 
 }
 
 h1{
     color: #31241e;
     position: absolute;
-    top: 35px;
+    top: 60px;
     left: 40px;
     font-size: 30px;
 }
 
 hr {
     position: absolute;
-    top: 100px;
+    top: 120px;
     height: 2px; 
     background-color: #31241e; 
     width: 96%;

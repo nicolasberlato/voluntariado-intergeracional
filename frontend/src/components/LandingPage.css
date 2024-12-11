@@ -1,0 +1,36 @@
+.parent {
+  display: flex; 
+  margin-top:0px;
+  padding: 0;
+  margin-left: -110px;
+  justify-content: center; 
+  align-items: center;
+  min-height: 100vh; 
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 10px; 
+  width: 80%; 
+  max-width: 1200px; 
+}
+
+.perfil {
+  flex: 1 1 calc(25% - 10px); 
+  max-width: calc(25% - 10px);
+  box-sizing: border-box; 
+  padding: 20px;
+  text-align: center; 
+  background-color: #31241e; 
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  
+}
+
+p {
+    color: #ccc;
+}
+
+
