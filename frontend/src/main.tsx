@@ -8,7 +8,7 @@ import Login from './components/Login.tsx'
 import LandingPage from './components/LandingPage.tsx'
 import Perfil from "./components/Perfil.tsx";
 import Encontros from './components/Encontros.tsx'
-import MarcarEncontro from "./components/MarcarEncontro.tsx";
+import MarcarEncontro from './components/MarcarEncontro.tsx'
 
 const router = createBrowserRouter([
   {
@@ -32,12 +32,12 @@ const router = createBrowserRouter([
     element: <Perfil />,
   },
   {
-    path: "/encontros",
-    element: <Encontros />,
+    path: "/marcarencontro",
+    element: <MarcarEncontro />,
   },
   {
-    path: "/marcarencontro",
-    element: <MarcarEncontro />
+    path: "/encontros",
+    element: <Encontros />,
   },
 ]);
 

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./LandingPage.css";
+import "./styles/LandingPage.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -34,10 +34,13 @@ function LandingPage() {
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
+        const userType = localStorage.getItem("userType");
+        const targetType = userType === "USUARIO" ? "VOLUNTARIO" : "USUARIO";
+
         const response = await axios.get(
-          "http://localhost:8080/user/type/USUARIO"
+          `http://localhost:8080/user/type/${targetType}`
         );
-        setProfiles(response.data); 
+        setProfiles(response.data);
       } catch (error) {
         console.error("Error fetching profiles:", error);
       }
@@ -46,10 +49,14 @@ function LandingPage() {
     fetchProfiles();
   }, []);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    console.log("Navigating to /marcarencontro");
-    navigate("/marcarencontro");
+  const handleClick = (user: User) => {
+    navigate("/marcarencontro", {
+      state: {
+        userName: user.name,
+        userId: user.id,
+        userAddress: user.address.localidade,
+      },
+    });
   };
 
   return (
@@ -58,10 +65,13 @@ function LandingPage() {
       <nav>
         <ul>
           <Link to="/perfil">
-            <li>PERFIL</li>
+            <li>EDITAR PERFIL</li>
           </Link>
           <Link to="/encontros">
             <li>ENCONTROS</li>
+          </Link>
+          <Link to="/historico">
+            <li>HISTÓRICO</li>
           </Link>
           <Link to="/">
             <li>LOGOUT</li>
@@ -85,7 +95,7 @@ function LandingPage() {
                   .join(", ")}
               </p>
               <p>Cidade: {user.address.localidade}</p>
-              <button onClick={handleClick}>Marcar Encontro</button>
+              <button onClick={() => handleClick(user)}>Marcar Encontro</button>
             </div>
           ))}
         </div>

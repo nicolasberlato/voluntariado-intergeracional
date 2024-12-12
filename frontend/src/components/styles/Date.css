@@ -1,0 +1,29 @@
+/* Remove padding and customize the button's background */
+.MuiButtonBase-root.MuiIconButton-root {
+  padding: 0; /* Remove padding */
+  background-color: transparent; /* Set transparent background */
+  border-radius: 8px; /* Optional: Adjust button radius */
+  transition: background-color 0.3s ease; /* Smooth transition for background */
+  position: relative;
+  left: -5px;
+  top: 0px;
+}
+
+.MuiSvgIcon-root {
+  font-size: 24px; 
+  color: #31241e;
+}
+
+.MuiButtonBase-root.MuiIconButton-root:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Focus effect for accessibility (when the button is focused) */
+.MuiButtonBase-root.MuiIconButton-root:focus {
+  outline: 2px solid #007bff; /* Outline for accessibility */
+}
+
+/* Style the ripple effect for a better UX */
+.MuiTouchRipple-root {
+  display: none; /* Hide ripple effect, or customize */
+}
