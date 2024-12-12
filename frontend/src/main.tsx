@@ -7,7 +7,8 @@ import Signup from './components/Signup.tsx'
 import Login from './components/Login.tsx'
 import LandingPage from './components/LandingPage.tsx'
 import Perfil from "./components/Perfil.tsx";
-import Mensagens from './components/Mensagens.tsx'
+import Encontros from './components/Encontros.tsx'
+import MarcarEncontro from "./components/MarcarEncontro.tsx";
 
 const router = createBrowserRouter([
   {
@@ -31,8 +32,12 @@ const router = createBrowserRouter([
     element: <Perfil />,
   },
   {
-    path: "/mensagens",
-    element: <Mensagens />,
+    path: "/encontros",
+    element: <Encontros />,
+  },
+  {
+    path: "/marcarencontro",
+    element: <MarcarEncontro />
   },
 ]);
 

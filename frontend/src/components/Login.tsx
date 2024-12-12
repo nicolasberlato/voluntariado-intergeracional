@@ -38,7 +38,7 @@ function Login() {
 
   return (
     <div className="login">
-      <h1>NOME DO SITE</h1>
+      <h1>AFETO CONECTA</h1>
       <nav>
         <ul>
           <Link to="/">

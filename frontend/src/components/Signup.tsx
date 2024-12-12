@@ -179,7 +179,7 @@ function Signup() {
 
   return (
     <div className="signup">
-      <h1>NOME DO SITE</h1>
+      <h1>AFETO CONECTA</h1>
       <nav>
         <ul>
           <Link to="/">

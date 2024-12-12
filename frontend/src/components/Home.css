@@ -3,13 +3,11 @@ body {
     background-color: #f6f4f3;
     font-family: Montserrat;
     overflow: hidden;
-    
 }
-
 
 nav {
     position: absolute;
-    top: 40px;
+    top: 35px;
     right: 10px;
     padding: 10px 20px;
     color: #31241e;
