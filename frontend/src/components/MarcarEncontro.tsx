@@ -1,14 +1,17 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, ChangeEvent } from "react";
 import Date from "./Date";
-import './styles/MarcarEncontro.css'
+import './styles/MarcarEncontro.css';
 
 interface Meeting {
   id: number;
   meetingType: string;
 }
 
+
 const MarcarEncontro = () => {
+
+  const navigate = useNavigate();
   const location = useLocation();
   const { userName } = location.state || {};
 
@@ -21,8 +24,15 @@ const MarcarEncontro = () => {
     });
   }
 
+  function handleClick() {
+
+    alert("Convite enviado");
+    navigate("/landingpage");
+
+  }
+
   return (
-    <div className="login">
+    <div className="marcarencontro">
       <h1>AFETO CONECTA</h1>
       <nav>
         <ul>
@@ -67,9 +77,11 @@ const MarcarEncontro = () => {
           Virtual
         </label>
 
+        <textarea rows={5} placeholder="Descreva a atividade que deseja realizar..." />
+
         <Date />
 
-        <button className="btnEnviaConvite">Enviar Convite</button>
+        <button className="btnEnviaConvite" onClick={handleClick}>Enviar Convite</button>
       </div>
     </div>
   );
