@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.afetoconecta.dtos.RegisterDTO;
 import com.afetoconecta.models.User;
@@ -24,6 +25,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody RegisterDTO registerDTO) {
         User user = userService.registerUser(registerDTO);
@@ -31,12 +34,14 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
         User user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/type/{type}")
     public List<User> getUsersByType(@PathVariable UserType type) {
         return userService.getUsersByType(type);
