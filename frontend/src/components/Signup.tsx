@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import "./Signup.css";
+import './styles/Signup.css';
 import axios, { AxiosResponse } from "axios";
 
 interface Address {
@@ -32,6 +32,7 @@ interface FormData {
 
 
 function Signup() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     type: "",
     name: "",
@@ -50,10 +51,14 @@ function Signup() {
     },
   });
 
-   const [availableActivities ] = useState<Activity[]>([
-     { id: 1, name: "Leitura" },
+   const [availableActivities] = useState<Activity[]>([
+     { id: 1, name: "Tarefas domésticas" },
      { id: 2, name: "Ajuda com tecnologia" },
-     { id: 3, name: "Atividade física" },
+     { id: 3, name: "Leitura" },
+     { id: 4, name: "Atividades ao ar livre" },
+     { id: 5, name: "Companhia" },
+     { id: 6, name: "Conversar" },
+     { id: 7, name: "Atividades físicas" },
    ]);
 
   const handleChange = (
@@ -113,6 +118,7 @@ function Signup() {
      );
 
      console.log("Signup successful:", response.data);
+     navigate("/login");
    } catch (err) {
      console.error("Error submitting form:", err);
    }
