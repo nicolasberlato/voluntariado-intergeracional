@@ -11,11 +11,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "meetings")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Meeting {
 
     @Id
@@ -32,25 +36,25 @@ public class Meeting {
 
     private LocalDateTime scheduledDate;
     @Enumerated(EnumType.STRING)
-    private MeetingType meetingType;
+    private MeetingType type;
     @Enumerated(EnumType.STRING)
-    private MeetingStatus meetingStatus;
+    private MeetingStatus status;
 
-    private Boolean user1Confirmed;
-    private Boolean user2Confirmed;
+    private boolean user1Confirmed;
+    private boolean user2Confirmed;
 
     private String location;
     private String description;
 
 
-    public Meeting(User user1, User user2, LocalDateTime scheduledDate, String location, String description, MeetingType meetingType){
+    public Meeting(User user1, User user2, LocalDateTime scheduledDate, String location, String description, MeetingType type){
         this.user1 = user1;
         this.user2 = user2;
         this.scheduledDate = scheduledDate;
         this.location = location;
         this.description = description;
-        this.meetingType = meetingType;
-        this.meetingStatus = MeetingStatus.PENDENTE;
+        this.type = type;
+        this.status = MeetingStatus.PENDENTE;
         this.user1Confirmed = true;
         this.user2Confirmed = false;
     }

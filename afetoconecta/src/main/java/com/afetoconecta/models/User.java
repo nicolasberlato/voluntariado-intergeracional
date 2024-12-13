@@ -2,6 +2,8 @@ package com.afetoconecta.models;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -47,10 +49,13 @@ public class User {
     )
     private Set<Activity> activities;
 
+    
     @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Meeting> initiatedMeetings;
     
     @OneToMany(mappedBy = "user2", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Meeting> receivedMeetings;
 
     public User(String name, String email, String password, UserType userType, Address address,

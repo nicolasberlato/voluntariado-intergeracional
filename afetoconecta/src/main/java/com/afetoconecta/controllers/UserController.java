@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import com.afetoconecta.dtos.MeetingDTO;
 import com.afetoconecta.dtos.RegisterDTO;
 import com.afetoconecta.models.Meeting;
 import com.afetoconecta.models.User;
