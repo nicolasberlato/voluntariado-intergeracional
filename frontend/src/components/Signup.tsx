@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import "./Signup.css";
+import './styles/Signup.css';
+import axios, { AxiosResponse } from "axios";
 
 interface Address {
   cep: string;
@@ -19,7 +20,7 @@ interface Activity {
 
 
 interface FormData {
-  usertype: string;
+  type: string;
   name: string;
   email: string;
   password: string;
@@ -28,9 +29,12 @@ interface FormData {
   activities: number[];
 }
 
+
+
 function Signup() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
-    usertype: "",
+    type: "",
     name: "",
     email: "",
     password: "",
@@ -47,10 +51,14 @@ function Signup() {
     },
   });
 
-   const [availableActivities ] = useState<Activity[]>([
-     { id: 1, name: "Leitura" },
+   const [availableActivities] = useState<Activity[]>([
+     { id: 1, name: "Tarefas domésticas" },
      { id: 2, name: "Ajuda com tecnologia" },
-     { id: 3, name: "Atividade física" },
+     { id: 3, name: "Leitura" },
+     { id: 4, name: "Atividades ao ar livre" },
+     { id: 5, name: "Companhia" },
+     { id: 6, name: "Conversar" },
+     { id: 7, name: "Atividades físicas" },
    ]);
 
   const handleChange = (
@@ -94,32 +102,27 @@ function Signup() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+   e.preventDefault(); 
 
-  try {
-    const response = await fetch("URL", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+   try {
+     
+     const response: AxiosResponse = await axios.post(
+       "http://localhost:8080/user/register",
+       formData,
+       {
+         headers: {
+           "Content-Type": "application/json",
+         },
+       }
+     );
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Signup successful:", data);
-   
-    } else {
-      const error = await response.json();
-      console.error("Signup failed:", error);
-  
-    }
-  } catch (err) {
-    console.error("Error submitting form:", err);
-    
-  }
-};
+     console.log("Signup successful:", response.data);
+     navigate("/login");
+   } catch (err) {
+     console.error("Error submitting form:", err);
+   }
+ };
   
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -182,7 +185,7 @@ function Signup() {
 
   return (
     <div className="signup">
-      <h1>NOME DO SITE</h1>
+      <h1>AFETO CONECTA</h1>
       <nav>
         <ul>
           <Link to="/">
@@ -202,9 +205,9 @@ function Signup() {
               <input
                 id="radio"
                 type="radio"
-                name="usertype"
-                value="voluntario"
-                checked={formData.usertype === "voluntario"}
+                name="type"
+                value="VOLUNTARIO"
+                checked={formData.type === "VOLUNTARIO"}
                 onChange={handleChange}
               />
               Voluntário
@@ -213,9 +216,9 @@ function Signup() {
               <input
                 id="radio"
                 type="radio"
-                name="usertype"
-                value="usuario"
-                checked={formData.usertype === "usuario"}
+                name="type"
+                value="USUARIO"
+                checked={formData.type === "USUARIO"}
                 onChange={handleChange}
               />
               Usuário
@@ -331,9 +334,7 @@ function Signup() {
               </label>
             </div>
           ))}
-          <Link to="/login">
-            <button type="submit">Enviar</button>
-          </Link>
+          <button type="submit">Enviar</button>
         </form>
       </div>
     </div>

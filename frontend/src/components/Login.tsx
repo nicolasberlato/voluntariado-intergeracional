@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 
-import './Login.css'
+import './styles/Login.css';
 
 function Login() {
   const [ email, setEmail ] = useState('');
@@ -12,7 +12,7 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://BACKEND", {
+      const response = await fetch("http://localhost:8080/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,22 +23,21 @@ function Login() {
       const data = await response.json();
 
       if (response.ok) {
-
-        //HOMEPAGE
-        navigate('/landingpage');
-
+        localStorage.setItem("userType", data.userType);
+        localStorage.setItem("token", data.token);
+        navigate("/landingpage");
       } else {
         alert(data.message || "Login failed");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred");
+      alert("An error occurred during login.");
     }
   };
 
   return (
     <div className="login">
-      <h1>NOME DO SITE</h1>
+      <h1>AFETO CONECTA</h1>
       <nav>
         <ul>
           <Link to="/">

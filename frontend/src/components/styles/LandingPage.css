@@ -19,14 +19,21 @@
 
 .perfil {
   flex: 1 1 calc(25% - 10px); 
-  max-width: calc(25% - 10px);
+  max-height: 500px;
   box-sizing: border-box; 
   padding: 20px;
   text-align: center; 
-  background-color: #31241e; 
+  background-color: #6b5348; 
   border: 1px solid #ccc;
   border-radius: 5px;
   
+}
+
+.perfil button {
+  position: relative;
+  top: 10px;
+  left: 0px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 p {
@@ -38,13 +45,17 @@ p {
     top: 120px;
     left: 1000px;
 }
+
 ul {
     display: inline;
     list-style-type: none;
 }
+
 li {
     display: inline;
     padding-right: 20px;
     font-weight: bold;
 }
+
+
 
