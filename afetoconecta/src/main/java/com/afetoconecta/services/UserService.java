@@ -67,7 +67,7 @@ public class UserService {
             userDTO.name(),
             userDTO.email(),
             userDTO.password(),
-            userDTO.userType(),
+            userDTO.type(),
             userDTO.address(),
             activities
         );
