@@ -27,18 +27,28 @@ interface User {
 }
 
 function LandingPage() {
-  const [profiles, setProfiles] = useState<User[]>([]); 
+  const [profiles, setProfiles] = useState<User[]>([]);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/");
+          return;
+        }
+
         const userType = localStorage.getItem("userType");
-        const targetType = userType === "USUARIO" ? "VOLUNTARIO" : "USUARIO";
+        const targetType = userType === "usuario" ? "usuario" : "voluntario";
 
         const response = await axios.get(
-          `http://localhost:8080/user/type/${targetType}`
+          `http://localhost:8080/${targetType}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, 
+            },
+          }
         );
         setProfiles(response.data);
       } catch (error) {
@@ -47,7 +57,7 @@ function LandingPage() {
     };
 
     fetchProfiles();
-  }, []);
+  }, [navigate]); // Dependency array includes `navigate` to avoid unnecessary re-renders
 
   const handleClick = (user: User) => {
     navigate("/marcarencontro", {
@@ -57,6 +67,11 @@ function LandingPage() {
         userAddress: user.address.localidade,
       },
     });
+  };
+
+  const handleLogout = () => {
+    localStorage.clear(); // Clear localStorage
+    navigate("/"); // Redirect to the login page
   };
 
   return (
@@ -73,9 +88,7 @@ function LandingPage() {
           <Link to="/historico">
             <li>HISTÓRICO</li>
           </Link>
-          <Link to="/">
-            <li>LOGOUT</li>
-          </Link>
+          <li onClick={handleLogout}>LOGOUT</li>
         </ul>
       </nav>
       <ul className="filtros">

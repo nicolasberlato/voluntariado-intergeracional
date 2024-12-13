@@ -20,7 +20,7 @@ interface Activity {
 
 
 interface FormData {
-  type: string;
+  userType: string;
   name: string;
   email: string;
   password: string;
@@ -34,7 +34,7 @@ interface FormData {
 function Signup() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
-    type: "",
+    userType: "",
     name: "",
     email: "",
     password: "",
@@ -108,7 +108,7 @@ function Signup() {
    try {
      
      const response: AxiosResponse = await axios.post(
-       "http://localhost:8080/user/register",
+       "http://localhost:8080/auth/register",
        formData,
        {
          headers: {
@@ -205,9 +205,9 @@ function Signup() {
               <input
                 id="radio"
                 type="radio"
-                name="type"
+                name="userType"
                 value="VOLUNTARIO"
-                checked={formData.type === "VOLUNTARIO"}
+                checked={formData.userType === "VOLUNTARIO"}
                 onChange={handleChange}
               />
               Voluntário
@@ -216,9 +216,9 @@ function Signup() {
               <input
                 id="radio"
                 type="radio"
-                name="type"
+                name="userType"
                 value="USUARIO"
-                checked={formData.type === "USUARIO"}
+                checked={formData.userType === "USUARIO"}
                 onChange={handleChange}
               />
               Usuário

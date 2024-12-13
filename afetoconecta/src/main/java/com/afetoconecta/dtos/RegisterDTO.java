@@ -5,7 +5,7 @@ import java.util.Set;
 import com.afetoconecta.models.Address;
 import com.afetoconecta.models.UserType;
 
-public record RegisterDTO(String name, String email, String password, UserType type, Address address, Set<Long> activities) {
+public record RegisterDTO(String name, String email, String password, UserType userType, Address address, Set<Long> activities) {
 
     public RegisterDTO {
         if (name == null || name.isBlank()) {
@@ -17,7 +17,7 @@ public record RegisterDTO(String name, String email, String password, UserType t
         if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("Email cannot be null or empty");
         }
-        if (type == null) {
+        if (userType == null) {
             throw new IllegalArgumentException("UserType cannot be null");
         }
     }
