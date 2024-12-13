@@ -14,5 +14,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository <User, Long> {
     List<User> findByUserType(UserType userType);
     Optional<User> findByEmail(String email);
+    List <User> findByUserTypeAndAddress_Localidade(UserType userType, String localidade);
 }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.afetoconecta.dtos.RegisterDTO;
 import com.afetoconecta.models.Activity;
+import com.afetoconecta.models.Meeting;
 import com.afetoconecta.models.User;
 import com.afetoconecta.models.UserType;
 import com.afetoconecta.repositories.ActivityRepository;
@@ -41,8 +42,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<User> getUsersByType(@PathVariable ("type")UserType type) {
+    public List<User> getUsersByType(@PathVariable UserType type) {
         return userRepository.findByUserType(type);
+    }
+
+    public List<User> getUsersByTypeAndLocalidade(UserType userType, String localidade) {
+        return userRepository.findByUserTypeAndAddress_Localidade(userType, localidade);
     }
 
     public User registerUser(RegisterDTO userDTO) {
@@ -68,5 +73,15 @@ public class UserService {
         return userRepository.save(user);
 
     }
-        
+    public Set<Meeting> getUserMeetingHistory(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        Set<Meeting> allMeetings = new HashSet<>();
+        allMeetings.addAll(user.getInitiatedMeetings());
+        allMeetings.addAll(user.getReceivedMeetings());
+        return allMeetings;
+    }
+    
+
 }
