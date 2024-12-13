@@ -38,9 +38,15 @@ hr {
     border: none;
 }
 
+.bemvindo {
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+}
+
 .sobre {
   display: flex; 
-  padding-top: 160px;
+  padding-top: 100px;
   width: 100vw; 
   justify-content: space-between; 
   align-items: center;
@@ -50,25 +56,27 @@ hr {
 
 .sobre p {
     max-width: 400px;
+    padding-left: 40px;
 }
 
 .sobre img {
-  height: 200px; 
+  height: 210px; 
   width: auto; 
 }
 
 .imagens {
     display: flex;
     justify-content: space-between;
-    margin-right: 30px;
-}
-
-button {
-    position: relative;
-    top: 80px;
+    margin-right: 58px;
 }
 
 .sobretexto {
     color: #31241e;
+    text-align: justify;
 
+}
+
+.btnCadastro {
+    position: relative;
+    left: 140px;
 }

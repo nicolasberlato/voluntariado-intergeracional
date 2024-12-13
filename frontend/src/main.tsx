@@ -10,6 +10,7 @@ import Perfil from "./components/Perfil.tsx";
 import Encontros from './components/Encontros.tsx'
 import MarcarEncontro from './components/MarcarEncontro.tsx'
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -25,19 +26,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/landingpage",
-    element: <LandingPage />,
+    element: (
+        <LandingPage />
+    ),
   },
   {
     path: "/perfil",
-    element: <Perfil />,
+    element: (
+        <Perfil />
+    ),
   },
   {
     path: "/marcarencontro",
-    element: <MarcarEncontro />,
+    element: (
+        <MarcarEncontro />
+    ),
   },
   {
     path: "/encontros",
-    element: <Encontros />,
+    element: (
+        <Encontros />
+    )
   },
 ]);
 

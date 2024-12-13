@@ -26,12 +26,14 @@ public class UserService {
     @Autowired
     private ActivityRepository activityRepository;
 
-    public User registerUser(User user) {
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already registered");
-        }
-        return userRepository.save(user);
-    }
+    /*
+     * public User registerUser(User user) {
+     * if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+     * throw new RuntimeException("Email already registered");
+     * }
+     * return userRepository.save(user);
+     * }
+     */
 
     public User getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);

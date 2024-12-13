@@ -1,6 +1,12 @@
 package com.afetoconecta.models;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -28,7 +34,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,5 +72,21 @@ public class User {
         this.userType = userType;
         this.address = address;
         this.activities = activities;
+    }
+
+    public User(String email, String password, UserType userType) {
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.userType == UserType.USUARIO) return List.of(new SimpleGrantedAuthority("ROLE_USUARIO"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_VOLUNTARIO"));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 }
