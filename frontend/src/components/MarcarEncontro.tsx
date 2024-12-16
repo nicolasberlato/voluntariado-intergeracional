@@ -28,28 +28,34 @@ interface Activity {
 }
 
 interface Meeting {
-  user1: User | null;
+  user1Id: string,
   user2: User | null;
   scheduledDate: string;
   location: string;
   description: string;
   type: string;
-  status: string;
-  user1Confirmed: boolean;
-  user2Confirmed: boolean;
 }
 
 const MarcarEncontro = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token");
+  const user1Id = localStorage.getItem("user1Id");
+
+  if (user1Id) {
+    console.log("User 1 ID:", user1Id);
+  } else {
+    console.error("User 1 ID not found");
+  }
+  
+
   if (!token) {
     alert("Token is missing. Please log in again.");
-    navigate("/login"); 
+    navigate("/login");
     return;
   }
 
-  const { user1, user2 } = location.state || {};
+  const { user2 } = location.state || {};
 
   useEffect(() => {
     if (!token) {
@@ -60,15 +66,12 @@ const MarcarEncontro = () => {
 
   const [scheduledDate, setScheduledDate] = useState<string>("");
   const [meeting, setMeeting] = useState<Meeting>({
-    user1: user1,
+    user1Id: "",
     user2: user2,
     scheduledDate: "",
     location: "",
     description: "",
     type: "",
-    status: "PENDING",
-    user1Confirmed: true,
-    user2Confirmed: false,
   });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -79,32 +82,40 @@ const MarcarEncontro = () => {
     });
   };
 
-  const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMeeting({
       ...meeting,
       description: event.target.value,
     });
   };
 
-  const handleLocationChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleLocationChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMeeting({
       ...meeting,
       location: event.target.value,
     });
   };
 
-  const handleClick = async () => {
+  const handleClick = async (event: React.FormEvent) => {
+    event.preventDefault(); 
+    console.log(
+      meeting.user1Id,
+       meeting.user2?.id,
+      scheduledDate,
+        meeting.location,
+        meeting.description,
+   meeting.type,
+    )
     try {
-      const formattedDate = new Date(scheduledDate).toISOString();
-
       const requestData = {
-        user1Id: meeting.user1?.id,
+        user1Id: meeting.user1Id,
         user2Id: meeting.user2?.id,
-        scheduledDate: formattedDate,
+        scheduledDate: scheduledDate,
         location: meeting.location,
         description: meeting.description,
         type: meeting.type,
       };
+      console.log(requestData);
 
       const response: AxiosResponse = await axios.post(
         "http://localhost:8080/meetings/new",
@@ -119,8 +130,6 @@ const MarcarEncontro = () => {
       if (response.status === 200) {
         alert("Convite enviado!");
         navigate("/landingpage");
-      } else {
-        alert("Erro ao enviar o convite.");
       }
     } catch (error: any) {
       console.error("Erro ao enviar o convite:", error);
@@ -156,55 +165,59 @@ const MarcarEncontro = () => {
         ) : (
           <p className="encontro">Nenhum usuário selecionado.</p>
         )}
+        <form onSubmit={handleClick}>
+          <label>
+            <input
+              id="presencial"
+              type="radio"
+              name="type"
+              value="PRESENCIAL"
+              checked={meeting.type === "PRESENCIAL"}
+              onChange={handleChange}
+            />
+            Presencial
+          </label>
 
-        <label>
+          <label>
+            <input
+              id="virtual"
+              type="radio"
+              name="type"
+              value="VIRTUAL"
+              checked={meeting.type === "VIRTUAL"}
+              onChange={handleChange}
+            />
+            Virtual
+          </label>
+
           <input
-            id="presencial"
-            type="radio"
-            name="type"
-            value="PRESENCIAL"
-            checked={meeting.type === "PRESENCIAL"}
-            onChange={handleChange}
+            type="text"
+            name="description"
+            placeholder="Descreva a atividade que deseja realizar..."
+            value={meeting.description}
+            onChange={handleDescriptionChange}
           />
-          Presencial
-        </label>
-
-        <label>
           <input
-            id="virtual"
-            type="radio"
-            name="type"
-            value="VIRTUAL"
-            checked={meeting.type === "VIRTUAL"}
-            onChange={handleChange}
+            type="text"
+            name="location"
+            placeholder="Descreva a atividade que deseja realizar..."
+            value={meeting.location}
+            onChange={handleLocationChange}
           />
-          Virtual
-        </label>
-
-        <textarea
-          rows={5}
-          name="description"
-          placeholder="Descreva a atividade que deseja realizar..."
-          value={meeting.description}
-          onChange={handleDescriptionChange}
-        />
-        <textarea
-          rows={5}
-          name="location"
-          placeholder="Descreva a atividade que deseja realizar..."
-          value={meeting.location}
-          onChange={handleLocationChange}
-        />
-        <input
-          type="datetime-local"
-          id="datetime-local"
-          value={scheduledDate}
-          onChange={(e) => setScheduledDate(e.target.value)}
-        />
-
-        <button className="btnEnviaConvite" onClick={handleClick}>
-          Enviar Convite
-        </button>
+          <input
+            type="datetime-local"
+            id="datetime-local"
+            value={scheduledDate}
+            onChange={(e) => {
+              const dateTime = e.target.value;
+              const formattedDateTime = dateTime + ":00";
+              setScheduledDate(formattedDateTime);
+            }}
+          />
+          <button className="btnEnviaConvite" type="submit">
+            Enviar Convite
+          </button>
+        </form>
       </div>
     </div>
   );
