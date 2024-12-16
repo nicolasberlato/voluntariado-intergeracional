@@ -1,22 +1,40 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, ChangeEvent } from "react";
-import Date from "./Date"; 
+import { useState, ChangeEvent, useEffect } from "react";
+import axios, { AxiosResponse } from "axios";
 import "./styles/MarcarEncontro.css";
 
-interface Meeting {
+interface User {
   id: number;
-  user1: {
-    id: number;
-    name: string;
-    initiatedMeetings: {};
-    receivedMeetings: {};
+  name: string;
+  email: string;
+  password: string;
+  userType: string;
+  address: {
+    cep: string;
+    logradouro: string;
+    complemento: string;
+    bairro: string;
+    localidade: string;
+    estado: string;
+    numero: string;
   };
-  user2: {};
-  meetingType: string;
-  meetingStatus: string;
+  activities: Activity[];
+  meeting: Meeting[];
+}
+
+interface Activity {
+  id: number;
+  description: string;
+}
+
+interface Meeting {
+  user1: User | null;
+  user2: User | null;
+  scheduledDate: string;
   location: string;
   description: string;
-  scheduledDate: string;
+  type: string;
+  status: string;
   user1Confirmed: boolean;
   user2Confirmed: boolean;
 }
@@ -24,46 +42,97 @@ interface Meeting {
 const MarcarEncontro = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { userName } = location.state || {};
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Token is missing. Please log in again.");
+    navigate("/login"); 
+    return;
+  }
 
+  const { user1, user2 } = location.state || {};
+
+  useEffect(() => {
+    if (!token) {
+      alert("Você precisa estar logado para acessar esta página.");
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  const [scheduledDate, setScheduledDate] = useState<string>("");
   const [meeting, setMeeting] = useState<Meeting>({
-    id: 0,
-    user1: "",
-    user2: "",
-    meetingType: "",
-    meetingStatus: "",
+    user1: user1,
+    user2: user2,
+    scheduledDate: "",
     location: "",
     description: "",
-    scheduledDate: "",
-    user1Confirmed: false,
+    type: "",
+    status: "PENDING",
+    user1Confirmed: true,
     user2Confirmed: false,
   });
 
-  const [scheduledTime, setScheduledTime] = useState<string>("");
-
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setMeeting({
       ...meeting,
       [name]: value,
     });
-  }
+  };
 
-  function handleDescriptionChange(event: ChangeEvent<HTMLTextAreaElement>) {
+  const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setMeeting({
       ...meeting,
       description: event.target.value,
     });
-  }
+  };
 
-  function handleTimeChange(event: ChangeEvent<HTMLInputElement>) {
-    setScheduledTime(event.target.value);
-  }
+  const handleLocationChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setMeeting({
+      ...meeting,
+      location: event.target.value,
+    });
+  };
 
-  function handleClick() {
-    alert("Convite enviado");
-    navigate("/landingpage");
-  }
+  const handleClick = async () => {
+    try {
+      const formattedDate = new Date(scheduledDate).toISOString();
+
+      const requestData = {
+        user1Id: meeting.user1?.id,
+        user2Id: meeting.user2?.id,
+        scheduledDate: formattedDate,
+        location: meeting.location,
+        description: meeting.description,
+        type: meeting.type,
+      };
+
+      const response: AxiosResponse = await axios.post(
+        "http://localhost:8080/meetings/new",
+        requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Convite enviado!");
+        navigate("/landingpage");
+      } else {
+        alert("Erro ao enviar o convite.");
+      }
+    } catch (error: any) {
+      console.error("Erro ao enviar o convite:", error);
+      if (axios.isAxiosError(error)) {
+        alert(
+          `Erro ao enviar o convite: ${error.response?.data || error.message}`
+        );
+      } else {
+        alert("Erro ao enviar o convite.");
+      }
+    }
+  };
 
   return (
     <div className="marcarencontro">
@@ -80,9 +149,9 @@ const MarcarEncontro = () => {
       </nav>
       <hr />
       <div className="cardEncontro">
-        {userName ? (
+        {meeting.user2 ? (
           <p className="encontro">
-            Você deseja marcar um encontro com {userName}?
+            Você deseja marcar um encontro com {meeting.user2.name}?
           </p>
         ) : (
           <p className="encontro">Nenhum usuário selecionado.</p>
@@ -92,9 +161,9 @@ const MarcarEncontro = () => {
           <input
             id="presencial"
             type="radio"
-            name="meetingType"
+            name="type"
             value="PRESENCIAL"
-            checked={meeting.meetingType === "PRESENCIAL"}
+            checked={meeting.type === "PRESENCIAL"}
             onChange={handleChange}
           />
           Presencial
@@ -104,9 +173,9 @@ const MarcarEncontro = () => {
           <input
             id="virtual"
             type="radio"
-            name="meetingType"
+            name="type"
             value="VIRTUAL"
-            checked={meeting.meetingType === "VIRTUAL"}
+            checked={meeting.type === "VIRTUAL"}
             onChange={handleChange}
           />
           Virtual
@@ -119,20 +188,18 @@ const MarcarEncontro = () => {
           value={meeting.description}
           onChange={handleDescriptionChange}
         />
-
-        <Date
-          selectedDate={meeting.scheduledDate}
-          onChange={(date: string) =>
-            setMeeting({ ...meeting, scheduledDate: date })
-          }
+        <textarea
+          rows={5}
+          name="location"
+          placeholder="Descreva a atividade que deseja realizar..."
+          value={meeting.location}
+          onChange={handleLocationChange}
         />
-
         <input
-          name="scheduledDate"
-          id="hora"
-          type="time"
-          value={scheduledTime}
-          onChange={handleTimeChange}
+          type="datetime-local"
+          id="datetime-local"
+          value={scheduledDate}
+          onChange={(e) => setScheduledDate(e.target.value)}
         />
 
         <button className="btnEnviaConvite" onClick={handleClick}>
