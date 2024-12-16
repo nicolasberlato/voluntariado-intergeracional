@@ -40,14 +40,7 @@ const MarcarEncontro = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token");
-  const user1Id = localStorage.getItem("user1Id");
 
-  if (user1Id) {
-    console.log("User 1 ID:", user1Id);
-  } else {
-    console.error("User 1 ID not found");
-  }
-  
 
   if (!token) {
     alert("Token is missing. Please log in again.");
@@ -98,17 +91,20 @@ const MarcarEncontro = () => {
 
   const handleClick = async (event: React.FormEvent) => {
     event.preventDefault(); 
+
+    const user1IdFromLocalStorage = localStorage.getItem("userId");
+
     console.log(
-      meeting.user1Id,
-       meeting.user2?.id,
+      user1IdFromLocalStorage,
+      meeting.user2?.id,
       scheduledDate,
-        meeting.location,
-        meeting.description,
-   meeting.type,
-    )
+      meeting.location,
+      meeting.description,
+      meeting.type
+    );
     try {
       const requestData = {
-        user1Id: meeting.user1Id,
+        user1Id: user1IdFromLocalStorage,
         user2Id: meeting.user2?.id,
         scheduledDate: scheduledDate,
         location: meeting.location,
