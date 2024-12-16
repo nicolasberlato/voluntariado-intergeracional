@@ -48,10 +48,15 @@ public class UserService {
         return userRepository.findByUserType(type);
     }
 
+    public List<User> getUsersByTypeAndLocalidade(UserType userType, String localidade) {
+        return userRepository.findByUserTypeAndAddress_Localidade(userType, localidade);
+    }
+
     public List<User> getUsersByFilters(UserType userType, String localidade, List<String> atividades) {
-        return userRepository.findByUserTypeAndAddress_LocalidadeAndActivities_DescriptionIn(userType, 
-        localidade != null && !localidade.isBlank() ? localidade : null, 
-        atividades != null && !atividades.isEmpty() ? atividades : null);
+        return userRepository.findByUserTypeAndAddress_LocalidadeAndActivities_DescriptionIn(
+            userType, 
+            localidade != null && !localidade.isEmpty() ? localidade : null, 
+            atividades != null && !atividades.isEmpty() ? atividades : null);
     }
 
     public Set<Meeting> getUserMeetingHistory(Long userId) {
