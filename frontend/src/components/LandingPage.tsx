@@ -40,10 +40,10 @@ function LandingPage() {
         }
 
         const userType = localStorage.getItem("userType");
-        const targetType = userType === "usuario" ? "usuario" : "voluntario";
+        const targetType = userType === "usuario" ? "voluntatio" : "usuario";
 
         const response = await axios.get(
-          `http://localhost:8080/${targetType}`,
+          `http://localhost:8080/users/${targetType}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, 
@@ -57,7 +57,7 @@ function LandingPage() {
     };
 
     fetchProfiles();
-  }, [navigate]); // Dependency array includes `navigate` to avoid unnecessary re-renders
+  }, [navigate]);
 
   const handleClick = (user: User) => {
     navigate("/marcarencontro", {
@@ -70,8 +70,8 @@ function LandingPage() {
   };
 
   const handleLogout = () => {
-    localStorage.clear(); // Clear localStorage
-    navigate("/"); // Redirect to the login page
+    localStorage.clear(); 
+    navigate("/"); 
   };
 
   return (

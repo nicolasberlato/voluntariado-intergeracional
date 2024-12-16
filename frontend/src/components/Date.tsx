@@ -1,23 +1,22 @@
-import { Box, Typography } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import './styles/Date.css';
+import React, { useState } from "react";
 
-function Date() {
-    return (
-      <div className="datePicker">
-        <Box style={{ padding: "20px" }}>
-          <Typography variant="h5" color="black" style={{ padding: "10px" }}>
-            {" "}
-            Selecione uma data:{" "}
-          </Typography>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker label="Select Date" />
-          </LocalizationProvider>
-        </Box>
-      </div>
-    );
+interface DateProps {
+  selectedDate: string;
+  onChange: (date: string) => void;
 }
+
+const Date: React.FC<DateProps> = ({ selectedDate, onChange }) => {
+  return (
+    <div>
+      <label htmlFor="datePicker">Select Date:</label>
+      <input
+        type="date"
+        id="datePicker"
+        value={selectedDate}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  );
+};
 
 export default Date;
