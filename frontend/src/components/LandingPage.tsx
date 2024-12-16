@@ -144,7 +144,7 @@ function LandingPage() {
         </li>
         <li>
           <button id="btnfiltros" onClick={handleFiltroAtividade}>
-            Filtrar por atividades
+            Filtrar por atividade
           </button>
         </li>
       </ul>

@@ -26,27 +26,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/landingpage",
-    element: (
-        <LandingPage />
-    ),
+    element: <LandingPage />,
   },
   {
     path: "/perfil",
-    element: (
-        <Perfil />
-    ),
+    element: <Perfil />,
   },
   {
     path: "/marcarencontro",
-    element: (
-        <MarcarEncontro />
-    ),
+    element: <MarcarEncontro />,
   },
   {
     path: "/encontros",
-    element: (
-        <Encontros />
-    )
+    element: <Encontros />,
   },
 ]);
 
