@@ -123,7 +123,7 @@ const MarcarEncontro = () => {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert("Convite enviado!");
         navigate("/landingpage");
       }
