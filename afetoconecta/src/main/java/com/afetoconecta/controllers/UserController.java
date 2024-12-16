@@ -46,18 +46,21 @@ public class UserController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/voluntario")
-    public List<User> getVoluntarios(@RequestParam(required = false) String localidade) {
-        if (localidade != null && !localidade.isEmpty()) {
-            return userService.getUsersByTypeAndLocalidade(UserType.VOLUNTARIO, localidade);
-        }
-        return userService.getUsersByType(UserType.VOLUNTARIO);
+    public List<User> getVoluntarios(
+                @RequestParam(required = false) String localidade,
+                @RequestParam(required = false) List<String> atividades) {
+            return userService.getUsersByFilters(UserType.VOLUNTARIO, localidade, atividades);
     }
     
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/usuario")
-    public List<User> getUsuario(){
-        return userService.getUsersByType(UserType.USUARIO);
+    public List<User> getUsuario(
+                @RequestParam(required = false) String localidade,
+                @RequestParam(required = false) List<String> atividades) {
+            return userService.getUsersByFilters(UserType.USUARIO, localidade, atividades);
     }
     
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{id}/history")
     public ResponseEntity<Set<Meeting>> getUserMeetingHistory(@PathVariable Long id) {
         Set<Meeting> meetings = userService.getUserMeetingHistory(id);

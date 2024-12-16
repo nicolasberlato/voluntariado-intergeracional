@@ -48,8 +48,10 @@ public class UserService {
         return userRepository.findByUserType(type);
     }
 
-    public List<User> getUsersByTypeAndLocalidade(UserType userType, String localidade) {
-        return userRepository.findByUserTypeAndAddress_Localidade(userType, localidade);
+    public List<User> getUsersByFilters(UserType userType, String localidade, List<String> atividades) {
+        return userRepository.findByUserTypeAndAddress_LocalidadeAndActivity_Name(userType, 
+        localidade != null && !localidade.isBlank() ? localidade : null, 
+        atividades != null && !atividades.isEmpty() ? atividades : null);
     }
 
     public User registerUser(RegisterDTO userDTO) {
