@@ -40,6 +40,11 @@
   position: relative;
   left: -70px;
 }
+
+#btn-filtrar-regiao {
+position: relative;
+  left: -70px;
+}
 p {
     color: #ccc;
 }

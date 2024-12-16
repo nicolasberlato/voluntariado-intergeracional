@@ -21,7 +21,6 @@ interface Meeting {
   user2Confirmed: boolean;
 }
 
-
 interface User {
   id: number;
   name: string;
@@ -44,6 +43,7 @@ interface User {
 function LandingPage() {
   const [profiles, setProfiles] = useState<User[]>([]);
   const [filteredProfiles, setFilteredProfiles] = useState<User[]>([]);
+  const [isFiltering, setIsFiltering] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,11 +62,12 @@ function LandingPage() {
           `http://localhost:8080/users/${targetType}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`, 
+              Authorization: `Bearer ${token}`,
             },
           }
         );
         setProfiles(response.data);
+        
       } catch (error) {
         console.error("Error fetching profiles:", error);
       }
@@ -76,18 +77,18 @@ function LandingPage() {
   }, [navigate]);
 
   const handleClick = (user: User) => {
-      const user1 = {
-    id: Number(localStorage.getItem("userId")),
-    name: localStorage.getItem("name"),
-    email: localStorage.getItem("email"),
-    password: localStorage.getItem("password"),
-    userType: localStorage.getItem("userType"),
-    address: JSON.parse(localStorage.getItem("address") || "{}"), 
-    activities: JSON.parse(localStorage.getItem("activities") || "[]"),
-    meetings: JSON.parse(localStorage.getItem("meetings") || "[]"),
-  };
+    const user1 = {
+      id: Number(localStorage.getItem("userId")),
+      name: localStorage.getItem("name"),
+      email: localStorage.getItem("email"),
+      password: localStorage.getItem("password"),
+      userType: localStorage.getItem("userType"),
+      address: JSON.parse(localStorage.getItem("address") || "{}"),
+      activities: JSON.parse(localStorage.getItem("activities") || "[]"),
+      meetings: JSON.parse(localStorage.getItem("meetings") || "[]"),
+    };
 
-   const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     navigate("/marcarencontro", {
       state: {
@@ -99,28 +100,36 @@ function LandingPage() {
   };
 
   const handleLogout = () => {
-    localStorage.clear(); 
-    navigate("/"); 
+    localStorage.clear();
+    navigate("/");
   };
 
-   const handleFiltroRegiao = () => {
-     const userAddress = JSON.parse(localStorage.getItem("address") || "{}");
+  const handleFiltroRegiao = async () => {
+    
+    const token = localStorage.getItem("token");
+    const userType = localStorage.getItem("userType");
+    const localidade = localStorage.getItem("userAddress");
+    console.log(localidade);
 
-     if (userAddress.logradouro) {
-       const filtered = profiles.filter(
-         (user) =>
-           user.address.logradouro.toLowerCase() ===
-           userAddress.logradouro.toLowerCase()
-       );
-       setFilteredProfiles(filtered); 
-     } else {
-       console.error("Logged-in user's logradouro not found.");
-     }
-   };
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/${userType}?localidade=${localidade}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsFiltering(true);
+      setFilteredProfiles(response.data); 
+    } catch (error) {
+      console.error("Error fetching users by region:", error);
+    }
+  };
 
-  const handleFiltroAtividade = () => {
-   
-  }
+  const handleFiltroAtividade = async () => {
+    // Implement activity filtering logic here if needed
+  };
 
   return (
     <div className="landingpage">
@@ -138,7 +147,7 @@ function LandingPage() {
       </nav>
       <ul className="filtros">
         <li>
-          <button id="btnfiltros" onClick={handleFiltroRegiao}>
+          <button id="btn-filtrar-regiao" onClick={handleFiltroRegiao}>
             Filtrar por região
           </button>
         </li>
@@ -151,8 +160,10 @@ function LandingPage() {
       <hr />
       <div className="parent">
         <div className="container">
-          {(filteredProfiles.length > 0 ? filteredProfiles : profiles).map(
-            (user, index) => (
+          {(isFiltering ? filteredProfiles : profiles).length === 0 ? (
+            <p>No profiles found matching the filter.</p>
+          ) : (
+            (isFiltering ? filteredProfiles : profiles).map((user, index) => (
               <div className="perfil" key={index}>
                 <h3>{user.name}</h3>
                 <p>
@@ -166,7 +177,7 @@ function LandingPage() {
                   Marcar Encontro
                 </button>
               </div>
-            )
+            ))
           )}
         </div>
       </div>

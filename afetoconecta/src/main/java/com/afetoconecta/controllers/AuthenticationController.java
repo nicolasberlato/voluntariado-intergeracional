@@ -12,6 +12,7 @@ import com.afetoconecta.models.User;
 import com.afetoconecta.models.UserType;
 import com.afetoconecta.repositories.ActivityRepository;
 import com.afetoconecta.repositories.UserRepository;
+import com.afetoconecta.services.UserService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +43,9 @@ public class AuthenticationController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private UserService userService;
     
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -53,8 +57,9 @@ public class AuthenticationController {
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
         Long userId = ((User) auth.getPrincipal()).getId();
+        User user = userService.getUserById(userId);
         
-        return ResponseEntity.ok(new LoginResponseDTO(token, userId));
+        return ResponseEntity.ok(new LoginResponseDTO(token, userId, user));
     }
 
     @PostMapping("/register")
