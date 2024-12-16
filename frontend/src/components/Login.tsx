@@ -21,10 +21,12 @@ function Login() {
       });
 
       const data = await response.json();
+      const { token, userId, userType } = data;
 
       if (response.ok) {
-        localStorage.setItem("userType", data.userType);
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("userType", userType);
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", userId);
         navigate("/landingpage");
       } else {
         alert(data.message || "Login failed");
