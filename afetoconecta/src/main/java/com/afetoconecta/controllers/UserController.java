@@ -28,15 +28,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody RegisterDTO registerDTO) {
-        User user = userService.registerUser(registerDTO);
-    
-        return ResponseEntity.ok(user);
-    }
-
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
