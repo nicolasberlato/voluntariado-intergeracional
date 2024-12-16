@@ -48,33 +48,12 @@ public class UserService {
         return userRepository.findByUserType(type);
     }
 
-    public List<User> getUsersByTypeAndLocalidade(UserType userType, String localidade) {
-        return userRepository.findByUserTypeAndAddress_Localidade(userType, localidade);
+    public List<User> getUsersByFilters(UserType userType, String localidade, List<String> atividades) {
+        return userRepository.findByUserTypeAndAddress_LocalidadeAndActivities_DescriptionIn(userType, 
+        localidade != null && !localidade.isBlank() ? localidade : null, 
+        atividades != null && !atividades.isEmpty() ? atividades : null);
     }
 
-    public User registerUser(RegisterDTO userDTO) {
-        Set<Activity> activities = new HashSet<>();
-
-        if (userDTO.activities() != null) {
-            for (Long activityId : userDTO.activities()) {
-                Activity activity = activityRepository.findById(activityId)
-                        .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + activityId));
-                activities.add(activity);
-            }
-        }
-
-        User user = new User(
-            userDTO.name(),
-            userDTO.email(),
-            userDTO.password(),
-            userDTO.type(),
-            userDTO.address(),
-            activities
-        );
-        
-        return userRepository.save(user);
-
-    }
     public Set<Meeting> getUserMeetingHistory(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));

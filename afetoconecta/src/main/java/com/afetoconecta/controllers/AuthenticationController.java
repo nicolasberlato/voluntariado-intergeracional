@@ -7,11 +7,15 @@ import com.afetoconecta.dtos.AuthenticationDTO;
 import com.afetoconecta.dtos.LoginResponseDTO;
 import com.afetoconecta.dtos.RegisterDTO;
 import com.afetoconecta.infra.TokenService;
+import com.afetoconecta.models.Activity;
 import com.afetoconecta.models.User;
 import com.afetoconecta.models.UserType;
+import com.afetoconecta.repositories.ActivityRepository;
 import com.afetoconecta.repositories.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +38,9 @@ public class AuthenticationController {
     private UserRepository repository;
 
     @Autowired
+    private ActivityRepository activityRepository;
+
+    @Autowired
     private TokenService tokenService;
     
     @Autowired
@@ -54,7 +61,24 @@ public class AuthenticationController {
         if(this.repository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.email(), encryptedPassword, data.type());
+        Set<Activity> activities = new HashSet<>();
+
+        if (data.activities() != null) {
+            for (Long activityId : data.activities()) {
+                Activity activity = activityRepository.findById(activityId)
+                        .orElseThrow(() -> new RuntimeException("Activity not found with ID: " + activityId));
+                activities.add(activity);
+            }
+        }
+
+        User newUser = new User(
+            data.name(),
+            data.email(),
+            encryptedPassword,
+            data.userType(),
+            data.address(),
+            activities
+        );
     
         this.repository.save(newUser);
         return ResponseEntity.ok().build();
