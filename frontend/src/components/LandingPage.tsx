@@ -43,6 +43,7 @@ interface User {
 
 function LandingPage() {
   const [profiles, setProfiles] = useState<User[]>([]);
+  const [filteredProfiles, setFilteredProfiles] = useState<User[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -102,6 +103,25 @@ function LandingPage() {
     navigate("/"); 
   };
 
+   const handleFiltroRegiao = () => {
+     const userAddress = JSON.parse(localStorage.getItem("address") || "{}");
+
+     if (userAddress.logradouro) {
+       const filtered = profiles.filter(
+         (user) =>
+           user.address.logradouro.toLowerCase() ===
+           userAddress.logradouro.toLowerCase()
+       );
+       setFilteredProfiles(filtered); 
+     } else {
+       console.error("Logged-in user's logradouro not found.");
+     }
+   };
+
+  const handleFiltroAtividade = () => {
+   
+  }
+
   return (
     <div className="landingpage">
       <h1>AFETO CONECTA</h1>
@@ -113,32 +133,41 @@ function LandingPage() {
           <Link to="/encontros">
             <li>ENCONTROS</li>
           </Link>
-          <Link to="/historico">
-            <li>HISTÓRICO</li>
-          </Link>
           <li onClick={handleLogout}>LOGOUT</li>
         </ul>
       </nav>
       <ul className="filtros">
-        <li>Filtrar por região</li>
-        <li>Filtrar por atividades</li>
+        <li>
+          <button id="btnfiltros" onClick={handleFiltroRegiao}>
+            Filtrar por região
+          </button>
+        </li>
+        <li>
+          <button id="btnfiltros" onClick={handleFiltroAtividade}>
+            Filtrar por atividades
+          </button>
+        </li>
       </ul>
       <hr />
       <div className="parent">
         <div className="container">
-          {profiles.map((user, index) => (
-            <div className="perfil" key={index}>
-              <h3>{user.name}</h3>
-              <p>
-                Lista de atividades:{" "}
-                {user.activities
-                  .map((activity: Activity) => activity.description)
-                  .join(", ")}
-              </p>
-              <p>Cidade: {user.address.localidade}</p>
-              <button onClick={() => handleClick(user)}>Marcar Encontro</button>
-            </div>
-          ))}
+          {(filteredProfiles.length > 0 ? filteredProfiles : profiles).map(
+            (user, index) => (
+              <div className="perfil" key={index}>
+                <h3>{user.name}</h3>
+                <p>
+                  Lista de atividades:{" "}
+                  {user.activities
+                    .map((activity: Activity) => activity.description)
+                    .join(", ")}
+                </p>
+                <p>Cidade: {user.address.localidade}</p>
+                <button onClick={() => handleClick(user)}>
+                  Marcar Encontro
+                </button>
+              </div>
+            )
+          )}
         </div>
       </div>
     </div>
