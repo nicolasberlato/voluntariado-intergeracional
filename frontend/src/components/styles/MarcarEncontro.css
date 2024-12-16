@@ -30,3 +30,11 @@ textarea{
   width: 300px;
   margin-top: 20px;
 }
+
+#hora {
+  background-color: #31241e;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+  margin-left: -5px;
+}

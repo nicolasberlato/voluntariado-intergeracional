@@ -24,7 +24,6 @@ interface FormData {
   name: string;
   email: string;
   password: string;
-  birthDate: string;
   address: Address;
   activities: number[];
 }
@@ -39,7 +38,6 @@ function Signup() {
     email: "",
     password: "",
     activities: [],
-    birthDate: "",
     address: {
     cep: "",
     localidade: "",
@@ -248,15 +246,6 @@ function Signup() {
             type="text"
             name="password"
             value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <input
-            placeholder="Data de nascimento:"
-            id="signupinput"
-            type="text"
-            name="birthDate"
-            value={formData.birthDate}
             onChange={handleChange}
             required
           />
