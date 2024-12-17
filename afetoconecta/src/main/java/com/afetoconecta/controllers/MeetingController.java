@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import com.afetoconecta.dtos.MeetingDTO;
 import com.afetoconecta.models.Meeting;
 import com.afetoconecta.services.MeetingService;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
 @RequestMapping("/meetings")
@@ -49,4 +51,12 @@ public class MeetingController {
         meetingService.cancelMeeting(meetingId, userId);
         return ResponseEntity.noContent().build();
     }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @GetMapping("/{meetingId}")
+    public ResponseEntity<MeetingDTO> getMeetingById(@PathVariable Long meetingId) {
+        MeetingDTO meetingDTO = meetingService.getMeetingById(meetingId);
+        return ResponseEntity.ok(meetingDTO);
+    }
+    
 }

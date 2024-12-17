@@ -1,3 +1,55 @@
-.cardEncontros {
+#encontros {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.meeting-card {
+  background-color: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.meeting-card:hover {
+  transform: scale(1.02);
+}
+
+.meeting-card p {
+  margin: 10px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.meeting-card strong {
+  color: #31241e;
+  font-weight: bold;
+}
+
+#encontros p {
+  text-align: center;
+  color: #666;
+  font-size: 18px;
+  font-style: italic;
+}
+
+h1 {
      color: #31241e;
+}
+
+.btnAceitar {
+     position: relative;
+     margin: 2px;
+     left: 75px;
+}
+.btnRecusar {
+     position: relative;
+     margin: 2px;
+     left: 75px;
 }
