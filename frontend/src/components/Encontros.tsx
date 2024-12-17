@@ -135,7 +135,7 @@ function Encontros() {
                 <p>
                   <strong>Encontro com </strong>{" "}
                   {meeting.user2?.id === parseInt(user1Id || "0")
-                    ? userName
+                    ? meeting.user1?.name
                     : meeting.user2?.name || "Não definido"}
                 </p>
                 <p>
