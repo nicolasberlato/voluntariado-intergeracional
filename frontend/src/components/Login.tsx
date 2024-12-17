@@ -21,10 +21,10 @@ function Login() {
       });
 
       const data = await response.json();
-      const { token, userId, userType, user } = data;
+      const { token, userId, user } = data;
 
       if (response.ok) {
-        localStorage.setItem("userType", userType);
+        localStorage.setItem("userType", user.userType.toLowerCase());
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
         localStorage.setItem("userAddress", user.address.localidade);
