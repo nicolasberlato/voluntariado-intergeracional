@@ -9,13 +9,11 @@ import com.afetoconecta.dtos.RegisterDTO;
 import com.afetoconecta.infra.TokenService;
 import com.afetoconecta.models.Activity;
 import com.afetoconecta.models.User;
-import com.afetoconecta.models.UserType;
 import com.afetoconecta.repositories.ActivityRepository;
 import com.afetoconecta.repositories.UserRepository;
 import com.afetoconecta.services.UserService;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +22,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 

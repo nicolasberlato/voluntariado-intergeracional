@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./styles/LandingPage.css";
 import { useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 interface Activity {
   id: number;
@@ -44,13 +44,14 @@ function LandingPage() {
   const [profiles, setProfiles] = useState<User[]>([]);
   const [filteredProfiles, setFilteredProfiles] = useState<User[]>([]);
   const [isFiltering, setIsFiltering] = useState<boolean>(false);
+  const [selectedActivity, setSelectedActivity] = useState("");
+
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
-        
         if (!token) {
           navigate("/");
           return;
@@ -68,7 +69,6 @@ function LandingPage() {
           }
         );
         setProfiles(response.data);
-        
       } catch (error) {
         console.error("Error fetching profiles:", error);
       }
@@ -106,14 +106,13 @@ function LandingPage() {
   };
 
   const handleFiltroRegiao = async () => {
-    
     const userType = localStorage.getItem("userType");
     const localidade = localStorage.getItem("userAddress");
     console.log(token);
-
+    const targetType = userType === "usuario" ? "voluntario" : "usuario";
     try {
       const response = await axios.get(
-        `http://localhost:8080/users/${userType}?localidade=${localidade}`,
+        `http://localhost:8080/users/${targetType}?localidade=${localidade}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -121,15 +120,37 @@ function LandingPage() {
         }
       );
       setIsFiltering(true);
-      setFilteredProfiles(response.data); 
-
+      setFilteredProfiles(response.data);
     } catch (error) {
       console.error("Error fetching users by region:", error);
     }
   };
 
-  const handleFiltroAtividade = async () => {
-    // Implement activity filtering logic here if needed
+  const handleFiltroAtividade = async (selectedActivity: string) => {
+    const userType = localStorage.getItem("userType");
+    const targetType = userType === "usuario" ? "voluntario" : "usuario";
+
+    if (!selectedActivity) {
+      console.error("No activity selected.");
+      return;
+    }
+
+    try {
+      const encodedActivity = encodeURIComponent(selectedActivity);
+
+      const response = await axios.get(
+        `http://localhost:8080/users/${targetType}?atividades=${encodedActivity}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsFiltering(true);
+      setFilteredProfiles(response.data);
+    } catch (error) {
+      console.error("Error fetching users by activity:", error);
+    }
   };
 
   return (
@@ -146,19 +167,35 @@ function LandingPage() {
           <li onClick={handleLogout}>LOGOUT</li>
         </ul>
       </nav>
-      <ul className="filtros">
-        <li>
-          <button id="btn-filtrar-regiao" onClick={handleFiltroRegiao}>
-            Filtrar por região
-          </button>
-        </li>
-        <li>
-          <button id="btnfiltros" onClick={handleFiltroAtividade}>
-            Filtrar por atividade
-          </button>
-        </li>
-      </ul>
       <hr />
+      <div className="div-filtros">
+        <button id="btn-filtrar-regiao" onClick={handleFiltroRegiao}>
+          Filtrar por região
+        </button>
+        <br />
+          <select
+            id="atividade"
+            value={selectedActivity}
+            onChange={(e) => {
+              const selectedValue = e.target.value;
+              setSelectedActivity(selectedValue);
+              handleFiltroAtividade(selectedValue); 
+            }}
+          >
+            <option value="" disabled>
+              Escolha uma atividade:
+            </option>
+            <option value="Tarefas domésticas">Tarefas domésticas</option>
+            <option value="Ajuda com tecnologia">Ajuda com tecnologia</option>
+            <option value="Leitura">Leitura</option>
+            <option value="Atividades ao ar livre">
+              Atividades ao ar livre
+            </option>
+            <option value="Companhia">Companhia</option>
+            <option value="Conversar">Conversar</option>
+            <option value="Atividades físicas">Atividades físicas</option>
+          </select>
+      </div>
       <div className="parent">
         <div className="container">
           {(isFiltering ? filteredProfiles : profiles).length === 0 ? (
