@@ -36,15 +36,6 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-#btnfiltros {
-  position: relative;
-  left: -70px;
-}
-
-#btn-filtrar-regiao {
-position: relative;
-  left: -70px;
-}
 p {
     color: #ccc;
 }
@@ -56,15 +47,46 @@ p {
 }
 
 ul {
-    display: inline;
+    display: block;
     list-style-type: none;
 }
 
-li {
-    display: inline;
-    padding-right: 20px;
+.filtrosLista {
+    display: block;
+    position: relative;
+    right: -100px;;
     font-weight: bold;
+    background-color: #6b5348;
 }
 
+li {
+  font-weight: bold;
+}
+
+.div-filtros {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+#btn-filtrar-regiao {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+  top: 100px;
+  left: 1200px;
+}
+
+#atividade {
+  margin-left: 10px;
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 2px;
+  background-color: #31241e;
+  position: relative;
+  top: 150px;
+  left: 952px;
+}
 
 

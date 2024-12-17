@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.afetoconecta.dtos.MeetingDTO;
-import com.afetoconecta.models.Meeting;
 import com.afetoconecta.services.MeetingService;
 import org.springframework.web.bind.annotation.GetMapping;
 

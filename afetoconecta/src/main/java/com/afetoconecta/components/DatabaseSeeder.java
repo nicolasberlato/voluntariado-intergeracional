@@ -1,16 +1,14 @@
 package com.afetoconecta.components;
 
-import java.net.PasswordAuthentication;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.afetoconecta.infra.SecurityConfiguration;
 import com.afetoconecta.models.Activity;
 import com.afetoconecta.models.User;
 import com.afetoconecta.models.UserType;

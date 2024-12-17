@@ -9,12 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.afetoconecta.dtos.RegisterDTO;
-import com.afetoconecta.models.Activity;
 import com.afetoconecta.models.Meeting;
 import com.afetoconecta.models.User;
 import com.afetoconecta.models.UserType;
-import com.afetoconecta.repositories.ActivityRepository;
 import com.afetoconecta.repositories.UserRepository;
 
 @Service
@@ -22,18 +19,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private ActivityRepository activityRepository;
-
-    /*
-     * public User registerUser(User user) {
-     * if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-     * throw new RuntimeException("Email already registered");
-     * }
-     * return userRepository.save(user);
-     * }
-     */
 
     public User getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);

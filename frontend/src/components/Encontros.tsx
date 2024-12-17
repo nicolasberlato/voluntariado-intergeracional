@@ -112,7 +112,8 @@ function Encontros() {
             meetings.map((meeting) => (
               <div key={meeting.id} className="meeting-card">
                 <p>
-                  <strong>Encontro com </strong> {meeting.user2.name}
+                  <strong>Encontro com </strong>{" "}
+                  {meeting.user2?.name || "Não definido"}
                 </p>
                 <p>
                   <strong>Data:</strong> {meeting.scheduledDate}
