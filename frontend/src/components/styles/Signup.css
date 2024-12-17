@@ -1,14 +1,14 @@
-
 body {
     background-color: #f6f4f3;
     font-family: Montserrat;
-    overflow: hidden;
-    
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 nav {
     position: absolute;
-    top: 0px;
+    top: 0;
     right: 10px;
     padding: 10px 20px;
     color: #31241e;
@@ -19,15 +19,15 @@ li {
 }
 
 nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  margin-top: 35px;
-  gap: 15px; 
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    margin-top: 35px;
+    gap: 15px;
 }
 
-h1{
+h1 {
     color: #31241e;
     position: absolute;
     top: 20px;
@@ -38,21 +38,21 @@ h1{
 hr {
     position: absolute;
     top: 100px;
-    height: 2px; 
-    background-color: #31241e; 
+    height: 2px;
+    background-color: #31241e;
     width: 96%;
     border: none;
 }
 
-form {
-    margin: auto; 
-    width: 850px; 
+.form-signup {
+    margin: auto;
+    width: 1000px;
     max-height: 500px;
-    background-color: #ffffff; 
-    padding: 20px; 
-    border-radius: 8px; 
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
-    font-size: 16px; 
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    
 }
 
 p {
@@ -63,7 +63,6 @@ p {
 
 label {
     color: #31241e;
-    
 }
 
 #atividadeslabel {
@@ -78,8 +77,7 @@ label {
     width: 150px;
     height: 20px;
     border-radius: 5px;
-    padding: 5px;
-    display:inline;
+    display: inline;
     margin: 20px;
 }
 
@@ -90,14 +88,8 @@ label {
 button {
     position: relative;
     left: 350px;
-    top: 10px; 
+    top: 10px;
     background-color: #31241e;
-}
-
-.form {
-    display: flex; 
-    margin-left: 250px;
-    gap: 110px; 
 }
 
 #radio {
@@ -108,5 +100,131 @@ button {
 }
 
 .voluntarioUsuario {
-    color:#31241e;
+    color: #31241e;
+}
+
+@media (max-width: 1200px) {
+    h1 {
+        font-size: 24px;
+        left: 20px;
+    }
+
+    nav ul {
+        gap: 10px;
+    }
+
+    form {
+        width: 70%;
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .form {
+        margin-left: 0;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    button {
+        left: 0;
+        margin-top: 10px;
+        width: 100%;
+        padding: 10px;
+    }
+
+    #signupinput {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    #atividadeslabel {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 20px;
+        left: 10px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    form {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .form {
+        margin-left: 0;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+    }
+
+    #signupinput {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    #atividades {
+        width: 100%;
+    }
+
+    #atividadeslabel {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 18px;
+        left: 10px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    form {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .form {
+        margin-left: 0;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+    }
+
+    #signupinput {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    #atividades {
+        width: 100%;
+    }
+
+    #atividadeslabel {
+        margin-top: 10px;
+    }
 }

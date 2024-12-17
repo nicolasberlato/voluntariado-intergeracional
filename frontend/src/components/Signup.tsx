@@ -195,7 +195,7 @@ function Signup() {
         </ul>
       </nav>
       <hr />
-      <div className="form">
+      <div className="form-signup">
         <form onSubmit={handleSubmit}>
           <p className="voluntarioUsuario">Você é um voluntário ou usuário?</p>
           <div id="tipo">

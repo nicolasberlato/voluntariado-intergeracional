@@ -27,6 +27,7 @@ function Login() {
         localStorage.setItem("userType", user.userType.toLowerCase());
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
+        localStorage.setItem("userName", user.name);
         localStorage.setItem("userAddress", user.address.localidade);
         navigate("/landingpage");
       } else {

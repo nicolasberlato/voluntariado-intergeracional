@@ -1,55 +1,147 @@
-#encontros {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.meeting-card {
-  background-color: #f9f9f9;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  transition: transform 0.2s ease-in-out;
-}
-
-.meeting-card:hover {
-  transform: scale(1.02);
-}
-
-.meeting-card p {
-  margin: 10px 0;
-  color: #333;
-  font-size: 16px;
-}
-
-.meeting-card strong {
-  color: #31241e;
-  font-weight: bold;
-}
-
-#encontros p {
-  text-align: center;
-  color: #666;
-  font-size: 18px;
-  font-style: italic;
+body {
+  background-color: #f6f4f3;
+  font-family: Montserrat, sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 h1 {
-     color: #31241e;
+  color: #31241e;
+  margin-left: 20px;
+  margin-top: 20px;
+  font-size: 30px;
+}
+
+nav {
+  position: absolute;
+  top: 35px;
+  right: 10px;
+  padding: 10px 20px;
+  color: #31241e;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li {
+  color: #31241e;
+  cursor: pointer;
+}
+
+hr {
+  margin-top: 20px;
+  height: 2px;
+  background-color: #31241e;
+  width: 96%;
+  border: none;
+}
+
+.cardEncontros h2 {
+  color: #31241e;
+  font-size: 24px;
+  margin-bottom: 35px;
+  margin-top: -60px;
+  
+}
+
+#encontros {
+  display: flex;
+  flex-direction:row;
+  gap: 20px;
+}
+
+.meeting-card {
+  background-color: #31241e;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: #31241e;
+  font-size: 16px;
+}
+
+.meeting-card p {
+  margin: 5px 0;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .btnAceitar {
-     position: relative;
-     margin: 2px;
-     left: 75px;
+  background-color: #01ae07;
+  color: #fff;
+  margin-right: 10px;
+  position: relative;
+  left: 0px;
 }
+
 .btnRecusar {
-     position: relative;
-     margin: 2px;
-     left: 75px;
+  background-color: #900a00;
+  color: #fff;
+  position: relative;
+  left: 0px;
+}
+
+@media (max-width: 768px) {
+  nav {
+    position: relative;
+    top: 0;
+    right: 0;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-left: 10px;
+  }
+
+  .cardEncontros {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .meeting-card {
+    font-size: 14px;
+    padding: 15px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+    margin-left: 5px;
+  }
+
+  .cardEncontros {
+    padding: 10px;
+  }
+
+  .meeting-card {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .btnAceitar, .btnRecusar {
+    font-size: 12px;
+  }
 }
