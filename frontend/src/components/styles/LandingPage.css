@@ -1,8 +1,32 @@
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  font-family: Montserrat;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+nav ul li {
+  margin: 0 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+hr {
+  width: 96%;
+  margin: 10px auto;
+}
+
 .parent {
   display: flex; 
-  margin-top: 0px;
+  margin-top: 0;
   padding: 0;
-  margin-left: -110px;
   justify-content: center; 
   align-items: center;
   min-height: 100vh; 
@@ -26,67 +50,95 @@
   background-color: #6b5348; 
   border: 1px solid #ccc;
   border-radius: 5px;
-  
+  color: white;
 }
 
 .perfil button {
   position: relative;
   top: 10px;
-  left: 0px;
+  left: 0;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-p {
-    color: #ccc;
-}
-
-.filtros {
-    position: relative;
-    top: 120px;
-    left: 1000px;
-}
-
-ul {
-    display: block;
-    list-style-type: none;
-}
-
-.filtrosLista {
-    display: block;
-    position: relative;
-    right: -100px;;
-    font-weight: bold;
-    background-color: #6b5348;
-}
-
-li {
-  font-weight: bold;
+  cursor: pointer;
 }
 
 .div-filtros {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
+  gap: 180px;
+  justify-content: center;
+  margin-top: 100px;
+  margin-bottom: -120px;
+  margin-right: -780px;
 }
 
 #btn-filtrar-regiao {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  position: relative;
-  top: 100px;
-  left: 1200px;
 }
 
 #atividade {
-  margin-left: 10px;
   padding: 5px;
+  margin-top:20px;
   font-size: 16px;
   border-radius: 2px;
   background-color: #31241e;
-  position: relative;
-  top: 150px;
-  left: 952px;
 }
 
+p {
+  color: #ccc;
+}
 
+@media (max-width: 1200px) {
+  .perfil {
+    flex: 1 1 calc(33.33% - 10px); 
+  }
+  
+  #btn-filtrar-regiao, #atividade {
+    top: 0; 
+    left: 0;
+    margin: 10px;
+  }
+
+  #atividade {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .perfil {
+    flex: 1 1 calc(50% - 10px); 
+  }
+
+  .container {
+    width: 90%;
+  }
+
+  #btn-filtrar-regiao {
+    margin-bottom: 10px;
+  }
+
+  #atividade {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .perfil {
+    flex: 1 1 100%; 
+  }
+
+  #btn-filtrar-regiao, #atividade {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+  
+  #atividade {
+    margin-left: 0;
+  }
+
+  nav ul {
+    flex-direction: column;
+  }
+}

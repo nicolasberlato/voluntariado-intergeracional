@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "./styles/Encontros.css";
 
 interface Meeting {
-  id: null;
-  user1: User | null;
-  user2: User | null;
+  id: number;
+  user1: { id: number; name: string };
+  user2: { id: number; name: string };
   scheduledDate: string;
   scheduledTime: string;
   location: string;
@@ -17,39 +17,16 @@ interface Meeting {
   user2Confirmed: boolean;
 }
 
-interface Activity {
-  id: number;
-  description: string;
-}
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  userType: string;
-  address: {
-    cep: string;
-    logradouro: string;
-    complemento: string;
-    bairro: string;
-    localidade: string;
-    estado: string;
-    numero: string;
-  };
-  activities: Activity[];
-  meetings: Meeting[];
-}
-
 function Encontros() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const user1Id = localStorage.getItem("userId");
+  const userName = localStorage.getItem("userName");
 
   useEffect(() => {
     const fetchMeetings = async () => {
       try {
-        const user1Id = localStorage.getItem("userId");
         const token = localStorage.getItem("token");
-        console.log(token)
+
         if (!user1Id || !token) {
           alert("User not authenticated");
           return;
@@ -63,32 +40,72 @@ function Encontros() {
         );
 
         setMeetings(response.data);
-        console.log(response.data)
       } catch (error) {
         console.error("Error fetching meetings:", error);
       }
     };
 
     fetchMeetings();
-  }, []);
+  }, [user1Id]);
 
-  
-  const handleAceitar = (meetingId: number | null) => {
-    setMeetings((prevMeetings) =>
-      prevMeetings.map((meeting) =>
-        meeting.id === meetingId
-          ? { ...meeting, status: "CONFIRMADO", user2Confirmed: true }
-          : meeting
-      )
-    );
+  const handleAceitar = async (meetingId: number | null) => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!token || !userId) {
+      alert("User not authenticated");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/meetings/${meetingId}/confirm?userId=${userId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setMeetings((prevMeetings) =>
+        prevMeetings.map((meeting) =>
+          meeting.id === meetingId
+            ? { ...meeting, status: "CONFIRMADO", user2Confirmed: true }
+            : meeting
+        )
+      );
+    } catch (error) {
+      console.error("Error confirming meeting:", error);
+    }
   };
 
-  const handleRecusar = (meetingId: number | null) => {
-    setMeetings((prevMeetings) =>
-      prevMeetings.map((meeting) =>
-        meeting.id === meetingId ? { ...meeting, status: "CANCELADO" } : meeting
-      )
-    );
+  const handleRecusar = async (meetingId: number | null) => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+
+    if (!token || !userId) {
+      alert("User not authenticated");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/meetings/${meetingId}/cancel?userId=${userId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setMeetings((prevMeetings) =>
+        prevMeetings.map((meeting) =>
+          meeting.id === meetingId
+            ? { ...meeting, status: "CANCELADO" }
+            : meeting
+        )
+      );
+    } catch (error) {
+      console.error("Error declining meeting:", error);
+    }
   };
 
   return (
@@ -113,13 +130,20 @@ function Encontros() {
               <div key={meeting.id} className="meeting-card">
                 <p>
                   <strong>Encontro com </strong>{" "}
-                  {meeting.user2?.name || "Não definido"}
+                  {meeting.user2?.id === parseInt(user1Id || "0")
+                    ? userName
+                    : meeting.user2?.name || "Não definido"}
                 </p>
                 <p>
-                  <strong>Data:</strong> {meeting.scheduledDate}
+                  <strong>Data:</strong>{" "}
+                  {new Date(meeting.scheduledDate).toLocaleDateString("pt-BR")}
                 </p>
                 <p>
-                  <strong>Hora:</strong> {meeting.scheduledTime}
+                  <strong>Hora:</strong>{" "}
+                  {new Date(meeting.scheduledDate).toLocaleTimeString("pt-BR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </p>
                 <p>
                   <strong>Local:</strong> {meeting.location}
@@ -143,12 +167,12 @@ function Encontros() {
                   className="btnRecusar"
                   onClick={() => handleRecusar(meeting.id)}
                 >
-                  Recusar
+                  Recusar/Cancelar
                 </button>
               </div>
             ))
           ) : (
-            <p>Nenhum encontro encontrado.</p>
+            <p>Nenhum encontro agendado.</p>
           )}
         </div>
       </div>

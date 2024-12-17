@@ -196,7 +196,7 @@ const MarcarEncontro = () => {
           <input
             type="text"
             name="location"
-            placeholder="Descreva a atividade que deseja realizar..."
+            placeholder="Onde? Ex.: Parque da cidade..."
             value={meeting.location}
             onChange={handleLocationChange}
           />

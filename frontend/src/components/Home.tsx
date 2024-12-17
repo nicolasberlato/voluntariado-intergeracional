@@ -13,9 +13,6 @@ function Home() {
         <h1>AFETO CONECTA</h1>
         <nav>
           <ul>
-            <Link to="/">
-              <li>HOME</li>
-            </Link>
             <Link to="/login">
               <li>LOGIN</li>
             </Link>
