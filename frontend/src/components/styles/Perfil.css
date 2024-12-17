@@ -1,0 +1,15 @@
+.form-profile {
+    display: inline;
+    color: #31241e;
+    
+}
+
+.form-profile input {
+    margin: 10px;
+}
+
+.form-profile button {
+    width: 20%;
+    margin-left: 35%;
+    margin-top: 10px;
+}
