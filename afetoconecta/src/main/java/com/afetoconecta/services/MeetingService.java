@@ -83,5 +83,11 @@ public class MeetingService {
             throw new IllegalArgumentException("Apenas as partes envolvidas podem cancelar o encontro.");
         }
     }
+
+    public MeetingDTO getMeetingById(Long meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new EntityNotFoundException("Meeting not found"));
+        return convertToDTO(meeting);
+    }
 }
 
