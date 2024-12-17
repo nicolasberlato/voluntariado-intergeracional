@@ -92,11 +92,18 @@ form label {
 
 form .btnEnviaConvite {
     margin-top: 20px;
-    margin-left: -350px;
+    margin-left: 0px;
 }
 
 #datetime-local {
   color: #31241e;
+}
+
+#label-presencial {
+    color: #31241e;
+}
+#label-virtual {
+    color: #31241e;
 }
 
 @media (max-width: 1200px) {
