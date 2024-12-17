@@ -109,10 +109,10 @@ function LandingPage() {
     const userType = localStorage.getItem("userType");
     const localidade = localStorage.getItem("userAddress");
     console.log(token);
-
+    const targetType = userType === "usuario" ? "voluntario" : "usuario";
     try {
       const response = await axios.get(
-        `http://localhost:8080/users/${userType}?localidade=${localidade}`,
+        `http://localhost:8080/users/${targetType}?localidade=${localidade}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -128,6 +128,7 @@ function LandingPage() {
 
   const handleFiltroAtividade = async (selectedActivity: string) => {
     const userType = localStorage.getItem("userType");
+    const targetType = userType === "usuario" ? "voluntario" : "usuario";
 
     if (!selectedActivity) {
       console.error("No activity selected.");
@@ -138,7 +139,7 @@ function LandingPage() {
       const encodedActivity = encodeURIComponent(selectedActivity);
 
       const response = await axios.get(
-        `http://localhost:8080/users/${userType}?atividades=${encodedActivity}`,
+        `http://localhost:8080/users/${targetType}?atividades=${encodedActivity}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
