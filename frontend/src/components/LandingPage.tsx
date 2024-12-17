@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./styles/LandingPage.css";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 interface Activity {
   id: number;
@@ -45,11 +45,12 @@ function LandingPage() {
   const [filteredProfiles, setFilteredProfiles] = useState<User[]>([]);
   const [isFiltering, setIsFiltering] = useState<boolean>(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
-        const token = localStorage.getItem("token");
+        
         if (!token) {
           navigate("/");
           return;
@@ -106,14 +107,13 @@ function LandingPage() {
 
   const handleFiltroRegiao = async () => {
     
-    const token = localStorage.getItem("token");
     const userType = localStorage.getItem("userType");
     const localidade = localStorage.getItem("userAddress");
-    console.log(localidade);
+    console.log(token);
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/${userType}?localidade=${localidade}`,
+        `http://localhost:8080/users/${userType}?localidade=${localidade}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -122,6 +122,7 @@ function LandingPage() {
       );
       setIsFiltering(true);
       setFilteredProfiles(response.data); 
+
     } catch (error) {
       console.error("Error fetching users by region:", error);
     }
