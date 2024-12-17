@@ -1,13 +1,17 @@
 package com.afetoconecta.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.afetoconecta.dtos.MeetingDTO;
 import com.afetoconecta.dtos.RegisterDTO;
+import com.afetoconecta.dtos.UpdateDTO;
 import com.afetoconecta.models.Meeting;
 import com.afetoconecta.models.User;
 import com.afetoconecta.models.UserType;
@@ -53,4 +58,18 @@ public class UserController {
         Set<Meeting> meetings = userService.getUserMeetingHistory(id);
         return ResponseEntity.ok(meetings);
     }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @PutMapping("/me")
+    public ResponseEntity<?> updateUserProfile(@RequestBody @Valid UpdateDTO userProfileUpdateDTO) {
+        // Obter o nome do usuário logado do token
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Atualizar o perfil do usuário
+        userService.updateUser(username, userProfileUpdateDTO);
+
+        // Responder com uma mensagem de sucesso
+        return ResponseEntity.ok("Perfil atualizado com sucesso!");
+    }
 }
+
