@@ -56,7 +56,7 @@ function Encontros() {
         }
 
         const response = await axios.get(
-          `http://localhost:8080/users/4/history`,
+          `http://localhost:8080/users/${user1Id}/history`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
