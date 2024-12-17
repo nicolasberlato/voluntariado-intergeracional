@@ -108,7 +108,6 @@ function LandingPage() {
   const handleFiltroRegiao = async () => {
     const userType = localStorage.getItem("userType");
     const localidade = localStorage.getItem("userAddress");
-    console.log(token);
     const targetType = userType === "usuario" ? "voluntario" : "usuario";
     try {
       const response = await axios.get(
