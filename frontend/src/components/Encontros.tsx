@@ -161,12 +161,15 @@ function Encontros() {
                 <p>
                   <strong>Status:</strong> {meeting.status}
                 </p>
-                <button
-                  className="btnAceitar"
-                  onClick={() => handleAceitar(meeting.id)}
-                >
-                  Aceitar
-                </button>
+                {parseInt(user1Id || "0") !== meeting.user1.id && (
+                  <button
+                    className="btnAceitar"
+                    onClick={() => handleAceitar(meeting.id)}
+                  >
+                    Aceitar
+                  </button>
+                )}
+
                 <button
                   className="btnRecusar"
                   onClick={() => handleRecusar(meeting.id)}
