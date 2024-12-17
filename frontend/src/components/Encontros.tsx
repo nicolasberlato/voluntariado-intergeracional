@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./styles/Encontros.css";
 
 interface Meeting {
@@ -21,6 +21,7 @@ function Encontros() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const user1Id = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -108,6 +109,11 @@ function Encontros() {
     }
   };
 
+   const handleLogout = () => {
+     localStorage.clear();
+     navigate("/");
+   };
+
   return (
     <div className="encontros">
       <h1>AFETO CONECTA</h1>
@@ -116,9 +122,7 @@ function Encontros() {
           <Link to="/landingpage">
             <li>HOME</li>
           </Link>
-          <Link to="/logout">
-            <li>LOGOUT</li>
-          </Link>
+          <li onClick={handleLogout}>LOGOUT</li>
         </ul>
       </nav>
       <hr />

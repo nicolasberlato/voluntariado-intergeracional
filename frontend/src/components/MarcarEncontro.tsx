@@ -139,6 +139,11 @@ const MarcarEncontro = () => {
     }
   };
 
+    const handleLogout = () => {
+      localStorage.clear();
+      navigate("/");
+    };
+
   return (
     <div className="marcarencontro">
       <h1>AFETO CONECTA</h1>
@@ -147,9 +152,7 @@ const MarcarEncontro = () => {
           <Link to="/landingpage">
             <li>HOME</li>
           </Link>
-          <Link to="/logout">
-            <li>LOGOUT</li>
-          </Link>
+          <li onClick={handleLogout}>LOGOUT</li>
         </ul>
       </nav>
       <hr />
@@ -162,7 +165,7 @@ const MarcarEncontro = () => {
           <p className="encontro">Nenhum usuário selecionado.</p>
         )}
         <form onSubmit={handleClick}>
-          <label>
+          <label id="label-presencial">
             <input
               id="presencial"
               type="radio"
@@ -174,7 +177,7 @@ const MarcarEncontro = () => {
             Presencial
           </label>
 
-          <label>
+          <label id="label-virtual">
             <input
               id="virtual"
               type="radio"
