@@ -10,7 +10,6 @@ import com.afetoconecta.models.User;
 import com.afetoconecta.models.UserType;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Repository
