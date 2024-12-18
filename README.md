@@ -21,4 +21,21 @@ Uma aplicação web, onde jovens e idosos poderão se cadastrar,  compartilhar  
     - página para inserir um objeto novo;
     - página para editar um objeto;
     - transição entre duas páginas
+   
+
+  ### Referências:
+
+- ##### GitHub - Projeto CovidAid: https://github.com/MLH-Fellowship/CovidAid
+  Repositório de referência para código e interface.
+- ##### YouTube - Vídeo de Referência: https://www.youtube.com/watch?v=5w-YCcOjPD0
+  Vídeo sobre Spring Security, utilizado no projeto.
+- ##### Baeldung: https://www.baeldung.com/
+  Plataforma de tutoriais técnicos e artigos para desenvolvimento de software.
+- ##### Papa: https://www.papa.com/
+  Referência de interface e sistema.
+- ##### Workaway: https://www.workaway.info/
+  Referência de interface e sistema.
+- ##### HomeShare: https://homeshareonline.org/
+  Referência de interface e sistema.
+
 
