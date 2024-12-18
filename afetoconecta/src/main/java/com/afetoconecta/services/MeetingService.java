@@ -25,8 +25,8 @@ public class MeetingService {
     private UserRepository userRepository;
 
     public Meeting scheduleMeeting(Long user1Id, Long user2Id, LocalDateTime scheduledDate, String description, String location, MeetingType meetingType) {
-        User user1 = userRepository.findById(user1Id).orElseThrow(() -> new EntityNotFoundException("User1 not found"));
-        User user2 = userRepository.findById(user2Id).orElseThrow(() -> new EntityNotFoundException("User2 not found"));
+        User user1 = userRepository.findById(user1Id).orElseThrow(() -> new EntityNotFoundException("Usuário requerente não encontrado."));
+        User user2 = userRepository.findById(user2Id).orElseThrow(() -> new EntityNotFoundException("Usuário requerido não encontrado."));
 
         Meeting meeting = new Meeting();
         meeting.setUser1(user1);
@@ -59,7 +59,7 @@ public class MeetingService {
     }
 
     public MeetingDTO confirmMeeting(Long meetingId, Long userId) {
-        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new EntityNotFoundException("Meeting not found"));
+        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(() -> new EntityNotFoundException("O encontro em questão não foi encontrado."));
 
         if (meeting.getUser2().getId().equals(userId)) {
             meeting.setUser2Confirmed(true);
@@ -67,7 +67,7 @@ public class MeetingService {
                 meeting.setStatus(MeetingStatus.CONFIRMADO);
             }
         } else {
-            throw new IllegalArgumentException("Only User2 can confirm this meeting");
+            throw new IllegalArgumentException("Apenas o convidado pode aceitar esse encontro.");
         }
         meeting = meetingRepository.save(meeting);
         return convertToDTO(meeting);
@@ -86,7 +86,7 @@ public class MeetingService {
 
     public MeetingDTO getMeetingById(Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new EntityNotFoundException("Meeting not found"));
+                .orElseThrow(() -> new EntityNotFoundException("O encontro em questão não foi encontrado."));
         return convertToDTO(meeting);
     }
 }
