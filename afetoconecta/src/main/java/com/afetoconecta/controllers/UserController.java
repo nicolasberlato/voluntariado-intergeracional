@@ -2,6 +2,7 @@ package com.afetoconecta.controllers;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.afetoconecta.dtos.MeetingDTO;
 import com.afetoconecta.dtos.RegisterDTO;
@@ -71,5 +73,18 @@ public class UserController {
         // Responder com uma mensagem de sucesso
         return ResponseEntity.ok("Perfil atualizado com sucesso!");
     }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        Optional<User> user = Optional.ofNullable(userService.getUserById(id));
+        if (user.isPresent()) {
+            userService.deleteUserById(id);
+            return ResponseEntity.noContent().build(); 
+        } else {
+            return ResponseEntity.notFound().build(); 
+        }
+    }
+
 }
 

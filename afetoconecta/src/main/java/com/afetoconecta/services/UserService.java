@@ -56,6 +56,17 @@ public class UserService {
             atividades != null && !atividades.isEmpty() ? atividades : null);
     }
 
+    public void deleteUserById(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+
+        if (user.isPresent()) {
+            userRepository.deleteById(userId);
+            System.out.println("Usuário com ID " + userId + " foi excluído com sucesso.");
+        } else {
+            System.out.println("Usuário com ID " + userId + " não encontrado.");
+        }
+    }
+
     public Set<Meeting> getUserMeetingHistory(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
