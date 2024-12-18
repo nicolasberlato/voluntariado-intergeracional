@@ -79,35 +79,35 @@ function Encontros() {
     }
   };
 
-  const handleRecusar = async (meetingId: number | null) => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
+ const handleRecusar = async (meetingId: number | null) => {
+   const token = localStorage.getItem("token");
+   const userId = localStorage.getItem("userId");
 
-    if (!token || !userId) {
-      alert("User not authenticated");
-      return;
-    }
+   if (!token || !userId) {
+     alert("User not authenticated");
+     return;
+   }
 
-    try {
-      const response = await axios.post(
-        `http://localhost:8080/meetings/${meetingId}/cancel?userId=${userId}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+   try {
+     await axios.post(
+       `http://localhost:8080/meetings/${meetingId}/cancel?userId=${userId}`,
+       {},
+       {
+         headers: { Authorization: `Bearer ${token}` },
+       }
+     );
 
-      setMeetings((prevMeetings) =>
-        prevMeetings.map((meeting) =>
-          meeting.id === meetingId
-            ? { ...meeting, status: "CANCELADO" }
-            : meeting
-        )
-      );
-    } catch (error) {
-      console.error("Error declining meeting:", error);
-    }
-  };
+     setMeetings((prevMeetings) =>
+       prevMeetings.map((meeting) =>
+         meeting.id === meetingId
+           ? { ...meeting, status: "CANCELADO" }
+           : meeting
+       )
+     );
+   } catch (error) {
+     console.error("Error declining meeting:", error);
+   }
+ };
 
    const handleLogout = () => {
      localStorage.clear();
@@ -170,12 +170,14 @@ function Encontros() {
                   </button>
                 )}
 
-                <button
-                  className="btnRecusar"
-                  onClick={() => handleRecusar(meeting.id)}
-                >
-                  Recusar/Cancelar
-                </button>
+                {meeting.status !== "CANCELADO" && (
+                  <button
+                    className="btnRecusar"
+                    onClick={() => handleRecusar(meeting.id)}
+                  >
+                    Recusar/Cancelar
+                  </button>
+                )}
               </div>
             ))
           ) : (

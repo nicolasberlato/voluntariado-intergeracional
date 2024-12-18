@@ -25,6 +25,7 @@ interface ProfileData {
   activities: number[];
 }
 
+
 function ProfileEdit() {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState<ProfileData>({
@@ -52,46 +53,36 @@ function ProfileEdit() {
     { id: 7, name: "Atividades físicas" },
   ]);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+          console.error("User ID not found");
+          return;
+        }
 
-    if (name === "activities") {
-      const selectedOptions = Array.from(
-        (e.target as HTMLSelectElement).selectedOptions
-      ).map((option) => Number(option.value));
-      setProfileData((prevData) => ({
-        ...prevData,
-        activities: selectedOptions,
-      }));
-    } else if (
-      [
-        "cep",
-        "localidade",
-        "logradouro",
-        "bairro",
-        "estado",
-        "numero",
-        "complemento",
-      ].includes(name)
-    ) {
-      setProfileData((prevData) => ({
-        ...prevData,
-        address: {
-          ...prevData.address,
-          [name]: value,
-        },
-      }));
-    } else {
-      setProfileData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
-  };
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `http://localhost:8080/users/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setProfileData({
+          ...response.data,
+          activities: response.data.activities.map(
+            (activity: Activity) => activity.id
+          ),
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   const handleCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -110,38 +101,47 @@ function ProfileEdit() {
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProfileData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+    const requestBody: Partial<ProfileData> = {};
+    if (profileData.name !== "") requestBody.name = profileData.name;
+    if (profileData.email !== "") requestBody.email = profileData.email;
+    if (profileData.address.cep !== "")
+      requestBody.address = profileData.address;
+    if (profileData.activities.length > 0)
+      requestBody.activities = profileData.activities;
 
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("User not authenticated");
-        return;
-      }
-
       const response = await axios.put(
-        "http://localhost:8080/users/me",
-        profileData,
+        `http://localhost:8080/users/me`,
+        requestBody,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      alert(response.data); 
+      alert("Editado com sucesso!");
       navigate("/landingpage");
+      console.log("Profile updated successfully", response);
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("There was an error updating your profile.");
     }
   };
 
-   const handleLogout = () => {
-     localStorage.clear();
-     navigate("/");
-   };
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
 
   return (
     <div className="profile-edit">
@@ -162,53 +162,50 @@ function ProfileEdit() {
           name="name"
           value={profileData.name}
           onChange={handleChange}
-          placeholder="Nome"
+          placeholder={profileData.name || "Nome"}
         />
         <input
           type="email"
+          className="input-email"
           name="email"
           value={profileData.email}
           onChange={handleChange}
-          placeholder="E-mail"
+          placeholder={profileData.email || "E-mail"}
         />
         <input
           type="text"
           name="cep"
           value={profileData.address.cep}
           onChange={handleChange}
-          placeholder="CEP"
+          placeholder={profileData.address.cep || "CEP"}
           maxLength={8}
         />
         <input
           type="text"
           name="localidade"
           value={profileData.address.localidade}
-          onChange={handleChange}
-          placeholder="Cidade"
+          placeholder={profileData.address.localidade || "Cidade"}
           readOnly
         />
         <input
           type="text"
           name="logradouro"
           value={profileData.address.logradouro}
-          onChange={handleChange}
-          placeholder="Logradouro"
+          placeholder={profileData.address.logradouro || "Logradouro"}
           readOnly
         />
         <input
           type="text"
           name="bairro"
           value={profileData.address.bairro}
-          onChange={handleChange}
-          placeholder="Bairro"
+          placeholder={profileData.address.bairro || "Bairro"}
           readOnly
         />
         <input
           type="text"
           name="estado"
           value={profileData.address.estado}
-          onChange={handleChange}
-          placeholder="Estado"
+          placeholder={profileData.address.estado || "Estado"}
           readOnly
         />
         <input
@@ -216,14 +213,14 @@ function ProfileEdit() {
           name="numero"
           value={profileData.address.numero}
           onChange={handleChange}
-          placeholder="Número"
+          placeholder={profileData.address.numero || "Número"}
         />
         <input
           type="text"
           name="complemento"
           value={profileData.address.complemento}
           onChange={handleChange}
-          placeholder="Complemento"
+          placeholder={profileData.address.complemento || "Complemento"}
         />
 
         {availableActivities.map((activity) => (

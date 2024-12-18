@@ -49,6 +49,42 @@ function LandingPage() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
+  const [filters, setFilters] = useState<Record<string, string>>({});
+
+  const handleFilterChange = (key: string, value: string) => {
+    setFilters((prevFilters) => {
+      const newFilters = { ...prevFilters, [key]: value };
+      handleFilter(newFilters);
+      return newFilters;
+    });
+  };
+
+  const handleFilter = async (activeFilters: Record<string, string>) => {
+    const userType = localStorage.getItem("userType");
+    const targetType = userType === "usuario" ? "voluntario" : "usuario";
+
+    if (Object.keys(activeFilters).length === 0) {
+      console.error("No filters selected.");
+      return;
+    }
+
+    try {
+      const queryString = new URLSearchParams(activeFilters).toString();
+      const response = await axios.get(
+        `http://localhost:8080/users/${targetType}?${queryString}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsFiltering(true);
+      setFilteredProfiles(response.data);
+    } catch (error) {
+      console.error("Error fetching filtered users:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
@@ -105,54 +141,6 @@ function LandingPage() {
     navigate("/");
   };
 
-  const handleFiltroRegiao = async () => {
-    const userType = localStorage.getItem("userType");
-    const localidade = localStorage.getItem("userAddress");
-    console.log(token);
-    const targetType = userType === "usuario" ? "voluntario" : "usuario";
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/users/${targetType}?localidade=${localidade}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setIsFiltering(true);
-      setFilteredProfiles(response.data);
-    } catch (error) {
-      console.error("Error fetching users by region:", error);
-    }
-  };
-
-  const handleFiltroAtividade = async (selectedActivity: string) => {
-    const userType = localStorage.getItem("userType");
-    const targetType = userType === "usuario" ? "voluntario" : "usuario";
-
-    if (!selectedActivity) {
-      console.error("No activity selected.");
-      return;
-    }
-
-    try {
-      const encodedActivity = encodeURIComponent(selectedActivity);
-
-      const response = await axios.get(
-        `http://localhost:8080/users/${targetType}?atividades=${encodedActivity}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setIsFiltering(true);
-      setFilteredProfiles(response.data);
-    } catch (error) {
-      console.error("Error fetching users by activity:", error);
-    }
-  };
-
   return (
     <div className="landingpage">
       <h1>AFETO CONECTA</h1>
@@ -169,33 +157,36 @@ function LandingPage() {
       </nav>
       <hr />
       <div className="div-filtros">
-        <button id="btn-filtrar-regiao" onClick={handleFiltroRegiao}>
+        <button
+          id="btn-filtrar-regiao"
+          onClick={() =>
+            handleFilterChange(
+              "localidade",
+              localStorage.getItem("userAddress") || ""
+            )
+          }
+        >
           Filtrar por região
         </button>
         <br />
-          <select
-            id="atividade"
-            value={selectedActivity}
-            onChange={(e) => {
-              const selectedValue = e.target.value;
-              setSelectedActivity(selectedValue);
-              handleFiltroAtividade(selectedValue); 
-            }}
-          >
-            <option value="" disabled>
-              Escolha uma atividade:
-            </option>
-            <option value="Tarefas domésticas">Tarefas domésticas</option>
-            <option value="Ajuda com tecnologia">Ajuda com tecnologia</option>
-            <option value="Leitura">Leitura</option>
-            <option value="Atividades ao ar livre">
-              Atividades ao ar livre
-            </option>
-            <option value="Companhia">Companhia</option>
-            <option value="Conversar">Conversar</option>
-            <option value="Atividades físicas">Atividades físicas</option>
-          </select>
+        <select
+          id="atividade"
+          value={filters.atividades || ""}
+          onChange={(e) => handleFilterChange("atividades", e.target.value)}
+        >
+          <option value="" disabled>
+            Escolha uma atividade:
+          </option>
+          <option value="Tarefas domésticas">Tarefas domésticas</option>
+          <option value="Ajuda com tecnologia">Ajuda com tecnologia</option>
+          <option value="Leitura">Leitura</option>
+          <option value="Atividades ao ar livre">Atividades ao ar livre</option>
+          <option value="Companhia">Companhia</option>
+          <option value="Conversar">Conversar</option>
+          <option value="Atividades físicas">Atividades físicas</option>
+        </select>
       </div>
+
       <div className="parent">
         <div className="container">
           {(isFiltering ? filteredProfiles : profiles).length === 0 ? (
