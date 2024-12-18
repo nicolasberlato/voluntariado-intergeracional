@@ -24,10 +24,10 @@ interface ProfileData {
   address: Address;
   activities: number[];
 }
-const navigate = useNavigate();
+
 
 function ProfileEdit() {
-  
+  const navigate = useNavigate();
   const [profileData, setProfileData] = useState<ProfileData>({
     name: "",
     email: "",
