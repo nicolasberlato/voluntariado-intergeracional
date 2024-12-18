@@ -102,17 +102,73 @@ function ProfileEdit() {
     }
   };
 
- const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-   const { name, value } = e.target;
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = e.target;
+
+  setProfileData((prevData) => {
+    if (["name", "email"].includes(name)) {
+      return {
+        ...prevData,
+        [name]: value,
+      };
+    }
+
+    if (["numero", "complemento"].includes(name)) {
+      return {
+        ...prevData,
+        address: {
+          ...prevData.address,
+          [name]: value,
+        },
+      };
+    }
+
+    return prevData;
+  });
+};
+
+
+
+ const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+   const { value } = e.target;
 
    setProfileData((prevData) => ({
      ...prevData,
      address: {
-       ...prevData.address, 
-       [name]: value,
+       ...prevData.address,
+       cep: value,
      },
    }));
+
+   if (value.length === 8) {
+     try {
+       const response = await fetch(`http://viacep.com.br/ws/${value}/json/`);
+       const json = await response.json();
+
+       if (
+         json &&
+         json.logradouro &&
+         json.bairro &&
+         json.localidade &&
+         json.uf
+       ) {
+         setProfileData((prevData) => ({
+           ...prevData,
+           address: {
+             ...prevData.address,
+             localidade: json.localidade,
+             logradouro: json.logradouro,
+             bairro: json.bairro,
+             estado: json.uf,
+           },
+         }));
+       }
+     } catch (error) {
+       console.error("Error fetching CEP data:", error);
+     }
+   }
  };
+
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -142,6 +198,8 @@ function ProfileEdit() {
       console.error("Error updating profile:", error);
     }
   };
+
+  
 
   const handleLogout = () => {
     localStorage.clear();
@@ -212,7 +270,7 @@ function ProfileEdit() {
           type="text"
           name="cep"
           value={profileData.address.cep}
-          onChange={handleChange}
+          onChange={handleCepChange}
           placeholder={profileData.address.cep || "CEP"}
           maxLength={8}
         />
