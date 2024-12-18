@@ -18,3 +18,10 @@
     background-color: #f6f4f3;
     color: #31241e;
 }
+
+.btn-excluir {
+    width: 13%;
+    margin-left: 86%;
+    margin-top: 10px;
+    background-color: #31241e;;
+}

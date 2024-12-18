@@ -37,7 +37,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // TODO Auto-generated method stub
+  
         Activity a1 = activityRepository.save(new Activity("Tarefas domésticas"));
         Activity a2 = activityRepository.save(new Activity("Ajuda com tecnologia"));
         Activity a3 = activityRepository.save(new Activity("Leitura"));
