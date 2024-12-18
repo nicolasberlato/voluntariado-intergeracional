@@ -53,16 +53,17 @@ function ProfileEdit() {
     { id: 7, name: "Atividades físicas" },
   ]);
 
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userId = localStorage.getItem("userId");
+        
         if (!userId) {
           console.error("User ID not found");
           return;
         }
-
-        const token = localStorage.getItem("token");
         const response = await axios.get(
           `http://localhost:8080/users/${userId}`,
           {
@@ -101,17 +102,21 @@ function ProfileEdit() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setProfileData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const { name, value } = e.target;
+
+   setProfileData((prevData) => ({
+     ...prevData,
+     address: {
+       ...prevData.address, 
+       [name]: value,
+     },
+   }));
+ };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
     const requestBody: Partial<ProfileData> = {};
     if (profileData.name !== "") requestBody.name = profileData.name;
     if (profileData.email !== "") requestBody.email = profileData.email;
@@ -142,6 +147,37 @@ function ProfileEdit() {
     localStorage.clear();
     navigate("/");
   };
+
+  async function handleExcluirPerfil(
+    event: React.MouseEvent<HTMLButtonElement>
+  ): Promise<void> {
+    event.preventDefault();
+
+    const userConfirmed = window.confirm(
+      "Tem certeza que deseja excluir seu perfil?"
+    );
+
+    if (userConfirmed) {
+      try {
+        const response = await axios.delete(
+          `http://localhost:8080/users/delete/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        alert("Usuário excluído com sucesso!");
+        navigate("/");
+        console.log("Profile deleted successfully", response);
+      } catch (error) {
+        console.error("Error deleting profile:", error);
+        alert("Ocorreu um erro ao excluir o perfil.");
+      }
+    } else {
+      console.log("User cancelled profile deletion.");
+    }
+  }
 
   return (
     <div className="profile-edit">
@@ -239,6 +275,7 @@ function ProfileEdit() {
 
         <button type="submit">Salvar Alterações</button>
       </form>
+      <button className="btn-excluir" onClick={handleExcluirPerfil}>Excluir perfil</button>
     </div>
   );
 }
