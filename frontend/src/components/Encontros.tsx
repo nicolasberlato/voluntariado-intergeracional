@@ -20,7 +20,6 @@ interface Meeting {
 function Encontros() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const user1Id = localStorage.getItem("userId");
-  const userName = localStorage.getItem("userName");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -161,7 +160,7 @@ function Encontros() {
                 <p>
                   <strong>Status:</strong> {meeting.status}
                 </p>
-                {parseInt(user1Id || "0") !== meeting.user1.id && (
+                {parseInt(user1Id || "0") !== meeting.user1.id && meeting.status !== "CONFIRMADO" && !meeting.user2Confirmed && (
                   <button
                     className="btnAceitar"
                     onClick={() => handleAceitar(meeting.id)}
