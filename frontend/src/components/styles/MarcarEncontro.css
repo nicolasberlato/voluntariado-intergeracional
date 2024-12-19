@@ -50,18 +50,22 @@ hr {
     font-size: 16px;
     max-width: 900px;
     margin: 50px auto;
+    position: relative;
+    left: 450px;
 }
 
 .encontro {
     color: #31241e;
     font-size: 18px;
     margin-bottom: 20px;
+    position: relative;
 }
 
 form {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    position: relative;
 }
 
 form input,
