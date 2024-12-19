@@ -242,8 +242,9 @@ function Signup() {
           />
           <input
             placeholder="Senha:"
+            className="password-input"
             id="signupinput"
-            type="text"
+            type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
